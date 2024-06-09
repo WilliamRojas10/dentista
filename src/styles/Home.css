@@ -1,0 +1,10 @@
+.home .main {
+    background-image: url('../Images/interiorOficina.jpg');
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 5rem;
+   }

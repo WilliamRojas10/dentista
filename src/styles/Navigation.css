@@ -1,0 +1,90 @@
+.navigation{
+}
+
+.navigation header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
+    padding: 30px 20px;
+
+}
+
+.navigation header ul{
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.navigation header ul li a, .navigation header .title{
+    text-decoration: none;
+    color: rgb(255, 217, 0);
+}
+.navigation header .title{
+    font-size: 1.5rem;
+}
+
+.navigation header ul li a:hover{
+    text-decoration:underline;
+  
+}
+
+
+.menu-icon, .cross-icon, .cross-icon-false {
+    display: none;
+    z-index: 2;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+
+
+
+@media screen and (max-width: 600px) {
+    .navigation header {
+        padding: 15px;
+    }
+    .navigation header .menuOpen{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100vh;
+        width: 70vw;
+        
+        background-color: rgba(0, 0, 0, 0.977);
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding-left:3em ;
+        gap: 3em 0;
+        z-index: 1;
+  
+
+    }
+    .navigation header .menuClose{
+       display: none;
+  
+        
+    }
+
+    .menu-icon{
+        display: flex;
+      color: white;
+
+    }
+    .menu-icon-false{
+        display: none;
+    }
+    .cross-icon {
+        display: flex;
+      color: white;
+
+     
+    }
+    .cross-icon-false{
+        display: none;
+    }
+
+}

@@ -1,0 +1,83 @@
+.register-turn{
+    width: 60vw;
+    
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 20%;
+    top: 15%;
+    z-index: 2;
+
+    gap: 1em;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.register-turn .close{
+    display: flex;
+    align-self:flex-end;
+    border: none;
+    background-color: transparent;
+    color: red;
+    
+ 
+}
+.register-turn .close:hover{
+   color: white;
+    cursor: pointer;
+    background-color: red;
+
+}
+
+.register-turn .submit{
+    padding: 0.5em 1.5em;
+    font-size: 15px;/*TODO a eliminar*/
+    border-radius: 10px;
+    border:none;
+    background-color: #007BFF;
+    color: #fff;
+}
+.register-turn .submit:hover{
+    background-color: #01a109;
+    cursor: pointer;
+}
+
+.register-turn .search-patient{
+    margin: 0;
+}
+.register-turn .search{
+    padding: 5px;
+    width: 10%;
+}
+.register-turn .search:hover{
+    cursor: pointer;
+}
+
+.register-turn .container-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.register-turn .container-buttons .register-user{
+    padding: 0.5em 0.5em;
+    font-size: 15px;/*TODO a eliminar*/
+    text-decoration: none;
+    border-radius: 10px;
+    
+    background-color: #cd66fc;
+    color: #fff;
+}
+.register-turn .container-buttons .register-user:hover{
+   text-decoration: underline;
+    cursor: pointer;
+}
+@media screen and (max-width: 600px) {
+    .register-turn{
+        width: 80vw;
+        left: 10%;/*ESTA MAL*/
+    }
+}

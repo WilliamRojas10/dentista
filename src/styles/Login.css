@@ -1,0 +1,109 @@
+
+/* *{
+    font-size: 20px;
+} */
+
+.login{
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('../Images/interiorOficina.jpg');
+     /*to bottom, , #8f00e8, #1271d0 -> para el degradado verticalmente */
+} 
+
+.login .box{
+    margin: 0 6%;
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.320);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+   /* backdrop-filter: blur(100px);EFECTO BORROSO*/
+}
+
+
+.login .box .login-form{
+    display: grid;
+    margin: 20px;
+    gap: 20px;
+
+}
+.login .box .login-form h2{
+    justify-self: center;
+     white-space: nowrap; /*para que el texto no ocupe mas de un renglon
+     Lo otro es para hacer scroll 
+     overflow: hidden;
+    text-overflow: ellipsis;*/
+}
+.login .box .login-form .signin {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.login .box .login-form .signin:hover {
+    background-color: #0056b3;
+    text-decoration: none;
+}
+
+.login .box .login-form .checkin{
+    
+    text-align: center;
+}
+
+.login .box .login-form .recover{
+    
+    padding-bottom: 3% ;
+    text-align: center;
+}
+
+.login .box .login-form a:hover{
+    text-decoration:underline;
+}
+.login .box .container-img img{
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 25px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 25px;
+
+}
+ 
+.msj-error{
+
+    color: red;
+    margin: 3% 0;
+}
+
+.oculto{
+
+    color: #994ec8;
+}
+
+
+/*--------------------------------o---------------------------*/
+@media screen and (max-width: 640px){
+
+
+.login .box .login-form h2{
+    font-size: 25px;
+
+}
+.login .box{
+    display: flex;
+    margin: 0 0;
+}
+.login .box .container-img{
+    display: none;
+}
+
+.login .box .login-form{
+    gap: 10px;
+}
+}

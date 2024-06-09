@@ -1,0 +1,14 @@
+.msj-error-email, .msj-error-contrasenia, .msj-error-dni{
+    color: red;
+    font-size: 15px;
+}
+
+input, select{
+    outline: none; /* Eliminar el contorno predeterminado */
+    width: 100%;
+    margin:0; /*Espacio entre el label */
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 1px rgba(0, 0, 0, 0.300);
+    
+}
