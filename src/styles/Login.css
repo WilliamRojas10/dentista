@@ -9,12 +9,13 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    padding: 0 3%;
     background-image: url('../Images/interiorOficina.jpg');
      /*to bottom, , #8f00e8, #1271d0 -> para el degradado verticalmente */
 } 
 
 .login .box{
-    margin: 0 6%;
+  
     background-color: white;
     border-radius: 25px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.320);

@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: rgb(240, 240, 240); /*to bottom, , #8f00e8, #1271d0 -> para el degradado verticalmente */
+   background-image: url("../Images/interiorOficina.jpg"); /*to bottom, , #8f00e8, #1271d0 -> para el degradado verticalmente */
 }
 .recover-account .box{
     margin: 0 6%;

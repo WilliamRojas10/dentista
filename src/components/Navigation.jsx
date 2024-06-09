@@ -18,7 +18,7 @@ function Navigation() {
         <ul className={open ? 'menuOpen' : 'menuClose'}>
           <li><Link to="/login"><FaRegUser /> Inicio de Sesion</Link></li>
           <li><Link to="/createAccount"><FaRegAddressCard /> Crear Cuenta</Link></li>
-          <li><Link to="/calendarWeekly">km</Link></li>
+          <li><Link to="/calendarWeekly">Turnero Alternativo</Link></li>
           <li><Link to="/calendario"><FaRegCalendarAlt /> Turnero</Link></li>
           <li><Link to="/registerTurn"><FaRegCalendarCheck /> Registrar Turno</Link></li>
         </ul>

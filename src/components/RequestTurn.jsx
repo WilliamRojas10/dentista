@@ -34,7 +34,7 @@ const RequestTurn = ({ dateTime, onConfirmTurn, onClose }) => {
                 <p><FaRegCalendarAlt /> {`Fecha: ${dateTime.toString()}`}</p>
                 <p><IoMdTime /> Hora:</p>
                 <p><LiaUserNurseSolid /> Especialista - Tratamiento</p>
-                <p><IoPersonOutline /> Nombre Pacinete - Dni</p>
+                <p><IoPersonOutline /> Nombre Paciente - Dni:</p>
                 <p><RiMoneyDollarCircleLine /> Precio</p>
                 <button className="submit" onClick={() => handleConfirm(duration)}>Confirmar</button>
             

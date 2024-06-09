@@ -201,7 +201,7 @@ const CalendarWeekly = () => {
                                                     dateTime={fecha}
                                                     hour={hora}
                                                     ref={ventanaRef}
-                                                    onClickBool={toggleVentana}
+                                                    onClose={toggleVentana}
                                                     onConfirmTurn={confirmTurn}
                                                 />
                                             )}
