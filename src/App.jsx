@@ -1,20 +1,20 @@
-import React from 'react'
-import Login from './components/Login.jsx'
-import RecoverAccount from './components/RecoverAccount.jsx'
-import CreateAccount from './components/CreateAccount.jsx'
-import RegisterProduct from './components/RegisterProduct.jsx'
-import CalendarMonthly from './components/CalendarMonthly.jsx'
-import CalendarWeekly from './components/CalendarWeekly.jsx'
-import RequestTurn from './components/RequestTurn.jsx'
-import RegisterTurn from './components/RegisterTurn.jsx'
-import { BrowserRouter,Routes, Route } from 'react-router-dom'
-import Home from './components/Home.jsx'
-import Prueba from './components/Prueba.jsx'
-import Calendario from './components/Calendar.jsx'
+import React from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home.jsx';
+import Login from './components/Login.jsx';
+import RecoverAccount from './components/RecoverAccount.jsx';
+import CreateAccount from './components/CreateAccount.jsx';
+import RegisterProduct from './components/RegisterProduct.jsx';
+import CalendarMonthly from './components/CalendarMonthly.jsx';
+import CalendarWeekly from './components/CalendarWeekly.jsx';
+import RequestTurn from './components/RequestTurn.jsx';
+import RegisterTurn from './components/RegisterTurn.jsx';
+import Prueba from './components/Prueba.jsx';
+import Calendario from './components/Calendar.jsx';
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -28,8 +28,8 @@ function App() {
         <Route path="/prueba" element={<Prueba />} />
         <Route path="/calendario" element={<Calendario />} />
       </Routes>
-    </BrowserRouter>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
