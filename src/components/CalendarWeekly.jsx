@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import '../styles/CalendarWeekly.css';
+import '../styles/CalendarAlternativo.css';
 import RequestTurn from './RequestTurn';
 import Navigation from './Navigation';
 

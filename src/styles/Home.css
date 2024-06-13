@@ -1,10 +1,43 @@
+.home{
+   background-color: rgb(243, 230, 255);
+}
+
+/* .home .presentation{
+    height: 50%;
+    background-color: rgb(93, 119, 189);
+    color: yellow;
+    position: relative;
+
+}
+.home .presentation .wave{
+    position:absolute;
+    bottom: 0%;
+    left: 0;
+    width: 100%;
+    
+} */
+
 .home .main {
-    background-image: url('../Images/interiorOficina.jpg');
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+  
+    
     justify-content: center;
     align-items: center;
-    padding: 1rem 5rem;
+    margin-top: 2rem;
+    padding:2rem;
    }
+
+.home .main .infographics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+
+/*RESPONSIVE*/
+@media screen and (max-width: 920px){
+    .home .main .infographics {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}

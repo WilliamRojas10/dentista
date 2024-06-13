@@ -1,8 +1,47 @@
+:root {
+
+  --azul:#007BFF;
+  --blanco:#fff;
+  --gris-claro:rgb(235, 235, 235);
+  --negro:#000;
+  --violeta: #9b59b6;
+  --rojo:#ff3b3b;
+}
+
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+
+
+/* Personalizar la barra de desplazamiento para navegadores WebKit */
+::-webkit-scrollbar {
+  width: 7px; /* Ancho de la barra de desplazamiento vertical */
+  height: 7px; /* Altura de la barra de desplazamiento horizontal */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bebebe; /* Color de la barra de desplazamiento */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a5a5a5; /* Color de la barra de desplazamiento cuando se pasa el ratón por encima */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color del fondo de la barra de desplazamiento */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+::-webkit-scrollbar-track:hover {
+  background: #e1e1e1; /* Color del fondo de la barra de desplazamiento cuando se pasa el ratón por encima */
+}
+
+
+
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

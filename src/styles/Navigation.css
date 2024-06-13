@@ -1,36 +1,46 @@
-.navigation{
+.navigation {
+
 }
 
 .navigation header {
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #000000;
+    background-color: rgb(114, 134, 190);
+    color: #fff;
     padding: 30px 20px;
 
 }
 
-.navigation header ul{
+.navigation header ul {
     display: flex;
     gap: 1.5rem;
     list-style: none;
 }
 
-.navigation header ul li a, .navigation header .title{
+.navigation header ul li a,
+.navigation header .title {
     text-decoration: none;
-    color: rgb(255, 217, 0);
+    color: #fff;
+    display: flex;
+    align-items: center;
+
 }
-.navigation header .title{
+
+.navigation header .title {
     font-size: 1.5rem;
 }
 
-.navigation header ul li a:hover{
-    text-decoration:underline;
-  
+.navigation header ul li a:hover {
+    text-decoration: underline;
+
 }
 
 
-.menu-icon, .cross-icon, .cross-icon-false {
+.menu-icon,
+.cross-icon,
+.cross-icon-false {
     display: none;
     z-index: 2;
     background-color: transparent;
@@ -42,48 +52,60 @@
 
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
     .navigation header {
         padding: 15px;
+        /*TODO CAMBIAR a tamaño relativo*/
     }
-    .navigation header .menuOpen{
+
+    .navigation header .menuOpen {
         display: flex;
         flex-direction: column;
         justify-content: center;
         height: 100vh;
         width: 70vw;
-        
-        background-color: rgba(0, 0, 0, 0.977);
-        position: absolute;
+
+        background-color: rgb(210, 211, 255);
+        filter: opacity(99%);
+        position: fixed;
         top: 0;
         right: 0;
-        padding-left:3em ;
+        padding-left: 3em;
         gap: 3em 0;
         z-index: 1;
-  
+
 
     }
-    .navigation header .menuClose{
-       display: none;
-  
-        
+
+    .navigation header .menuClose {
+        display: none;
+
+
     }
 
-    .menu-icon{
+    .navigation header ul li a {
+        color: black;
+        font-weight: 600;
+    }
+
+    .menu-icon {
         display: flex;
-      color: white;
+        color: var(--negro);
 
     }
-    .menu-icon-false{
+
+    .menu-icon-false {
         display: none;
     }
+
     .cross-icon {
         display: flex;
-      color: white;
-
-     
+        position: fixed;
+        right: 1rem;
+        color: black;
     }
-    .cross-icon-false{
+
+    .cross-icon-false {
         display: none;
     }
 

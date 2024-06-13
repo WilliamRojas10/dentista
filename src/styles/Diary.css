@@ -1,0 +1,74 @@
+
+/*----------PENDING SHIFT----------*/
+.pending-shift {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--violeta);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    gap: 5px;
+    /*TODO Fijarse si queda en 18x o 5pc*/
+    margin: 0 1rem;
+}
+
+.pending-shift .date-text span {
+    font-weight: 600;
+    color: var(--violeta);
+}
+
+.pending-shift .cancel {
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: var(--blanco);
+    background-color: var(--rojo);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.pending-shift .cancel:hover {
+    color: var(--negro);
+}
+
+/*-------DIARY--------*/
+.diary {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-x: hidden;
+
+    height: 84vh;
+    background-color: var(--blanco);
+}
+
+.diary .warning-text {
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.diary .container-btn {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    background-color: rgb(235, 235, 235);
+}
+
+.diary .close {
+    display: flex;
+    align-self: flex-start;
+    border: none;
+    color: var(--rojo);
+    font-size: 2rem;
+  
+    margin: 1rem;
+}
+
+.diary .close:hover {
+    color: white;
+    cursor: pointer;
+    background-color: var(--rojo);
+
+}

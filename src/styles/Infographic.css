@@ -1,0 +1,23 @@
+.infographic {
+   display: grid;
+   grid-template-columns: 150px 1fr;
+   gap: 1rem;
+   padding: 1rem;
+   border-radius: 10px;
+   align-items: center;
+   background-color: rgb(218, 189, 218);
+}
+.infographic .container-img {
+    height: 100px;
+  
+}
+.infographic .container-img img {
+    height: 100%;
+    width: 100%;
+}
+
+@media screen and (max-width: 920px){
+    .infographic {
+        grid-template-columns: 1fr;
+    }
+}

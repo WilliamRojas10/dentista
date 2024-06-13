@@ -28,7 +28,7 @@ const RequestTurn = ({ dateTime, onConfirmTurn, onClose }) => {
 
                 <ListaPlegable
                 placeholder={"Tratamientos"}
-                opciones={[15,30]}
+                opciones={[7,15,20, 30, 45,57, 60,]}
                 handleSelectChange={ getSelectedValue}
                 />
                 <p><FaRegCalendarAlt /> {`Fecha: ${dateTime.toString()}`}</p>

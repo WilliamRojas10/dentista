@@ -1,0 +1,23 @@
+.carousel-react {
+    width: 100%;
+    height: 50vh;
+    overflow:hidden;
+
+}
+
+.carousel-react .slider > .slick-dots .slick-active {
+z-index: 20;
+}
+
+.carousel-react img{
+    width: 100%;
+ 
+    height: 100%;
+}
+
+ @media screen and (max-width: 1000px) {
+    .carousel-react {
+        width: 100vw;
+        height: 30vh;
+    }
+ }

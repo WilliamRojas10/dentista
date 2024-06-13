@@ -1,0 +1,69 @@
+.footer .container {
+    background-color: rgb(114, 134, 190);
+color: #fff;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5rem;
+    align-items: center;
+    padding: 2rem 4rem 3rem 4rem;
+}
+
+.footer .container .map {
+    width: 100%;
+    height: 200px;
+    /*TODO Se tiene que usar medida relativa */
+
+
+}
+
+.footer .container .map img {
+    width: 100%;
+    height: 100%;
+}
+
+.footer .container .info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.footer .container .contact {
+    text-align: center;
+}
+
+.footer .ad {
+    text-align: center;
+    background-color: black;
+    padding: 2rem;
+}
+
+.footer .ad a {
+    text-decoration: none;
+    color: rgb(255, 217, 0);
+}
+
+@media screen and (max-width: 920px) {
+    .footer .container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    padding: 2rem;
+
+    }
+
+    .footer .container .info {
+        margin-left: 0;
+        gap: 1rem;
+
+    }
+
+    .footer .container .contact {
+        border-top: solid 1px rgba(0, 0, 0, 0.692);
+        padding-top: 2rem;
+    }
+
+    .footer .container .address {
+        text-align: center;
+    }
+
+
+}

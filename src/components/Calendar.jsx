@@ -1,56 +1,53 @@
-import React, { useState, useCallback } from 'react';
-import { Calendar, dayjsLocalizer } from 'react-big-calendar';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import React, { useState, useEffect } from 'react';
+import '../styles/Calendar.css';
+import RequestTurn from './RequestTurn';
+import Navigation from './Navigation';
+import Diary from './Diary';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
-import '../styles/Calendar.css';
-import Navigation from './Navigation';
-import RequestTurn from './RequestTurn';
 
-
-// Configurar localizador para dayjs con idioma español
 dayjs.locale('es');
-const localizer = dayjsLocalizer(dayjs);
 
 const Calendario = () => {
+    const [openDiary, setOpenDiary] = useState(false);
     const [ventanaAbierta, setVentanaAbierta] = useState(false);
     const [openRequestTurn, setOpenRequestTurn] = useState(false);
-    const [selectedEvent, setSelectedEvent] = useState(null);
-    const [events, setEvents] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
     const [occupiedTimes, setOccupiedTimes] = useState({});
-    const [view, setView] = useState('week');
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(dayjs());
 
-    const handleSelectSlot = useCallback(({ start }) => {
-        const isoDate = start.toISOString();
-        if (!occupiedTimes[isoDate]) {
-            setSelectedEvent(start);
-            setOpenRequestTurn(true);
-            setVentanaAbierta(true);
-        }
-    }, [occupiedTimes]);
+    useEffect(() => {
+        // Fetch data from the database and set occupiedTimes
+        // Example: setOccupiedTimes({ '2024-06-11T09:00:00': true });
+    }, []);
+
+    const handlePrevNext = (type) => {
+        setCurrentDate(currentDate.add(type === 'prev' ? -1 : 1, 'week'));
+    };
+
+    const handleToday = () => {
+        setCurrentDate(dayjs());
+    };
+
+    const handleDayClick = (date) => {
+        setSelectedDate(date);
+        console.log(currentDate.$H);
+        setVentanaAbierta(true);
+        setOpenRequestTurn(true);
+    };
 
     const confirmTurn = (duration) => {
         const timesToBlock = [];
-        const startTime = new Date(selectedEvent);
+        const startTime = selectedDate;
 
         for (let i = 0; i < duration / 15; i++) {
-            const timeSlot = new Date(startTime);
-            timeSlot.setMinutes(startTime.getMinutes() + (i * 15));
-            timesToBlock.push(timeSlot.toISOString());
+            const timeSlot = startTime.add(i * 15, 'minute');
+            timesToBlock.push(timeSlot.format());
         }
 
-        const newEvents = timesToBlock.map(time => ({
-            start: new Date(time),
-            end: new Date(new Date(time).setMinutes(new Date(time).getMinutes() + 15)),
-            title: 'Reservado'
-        }));
-
-        setEvents(prev => [...prev, ...newEvents]);
-
-        setOccupiedTimes(prev => {
+        setOccupiedTimes((prev) => {
             const newOccupiedTimes = { ...prev };
-            timesToBlock.forEach(time => newOccupiedTimes[time] = true);
+            timesToBlock.forEach((time) => (newOccupiedTimes[time] = true));
             return newOccupiedTimes;
         });
 
@@ -58,79 +55,87 @@ const Calendario = () => {
         setOpenRequestTurn(false);
     };
 
-    const handleNavigate = (date) => {
-        setCurrentDate(date);
+    const isToday = (date) => {
+        return date.isSame(dayjs(), 'day');
     };
 
-    const handlePrevNext = (direction) => {
-        const newDate = new Date(currentDate);
-        if (view === 'week') {
-            newDate.setDate(currentDate.getDate() + (direction === 'prev' ? -7 : 7));
-        } else if (view === 'month') {
-            newDate.setMonth(currentDate.getMonth() + (direction === 'prev' ? -1 : 1));
-        }
-        setCurrentDate(newDate);
-    };
 
-    const handleToday = () => {
-        setCurrentDate(new Date());
+    const handleOpenDiary = () => {
+        setOpenDiary(!openDiary);
+        console.log(openDiary);
     };
-
     return (
         <div className="calendar-container">
             <Navigation />
-            <div className="calendar-weekly">
+            {openDiary && <Diary onOpen={handleOpenDiary} />}
+            <div className={openDiary ? "calendar-weekly reduced" : "calendar-weekly"}>
+                <div className='nav'>
+                    <span className="btn-today" onClick={handleOpenDiary}>
+                        Agenda
+                    </span>
+                    <h3>
+                        ODONTOLOGIA
+                    </h3>
+                    <span className="btn-today" onClick={handleToday}>
+                        Hoy
+                    </span>
+
+                </div>
                 <header>
                     <div className="icons">
-                        <span id="prev" className="material-symbols-rounded" onClick={() => handlePrevNext('prev')}>
+                        <span className="material-symbols-rounded" onClick={() => handlePrevNext('prev')}>
                             {"<"}
                         </span>
-                        <h3 className="current-date" onClick={() => setView(view === 'week' ? 'month' : 'week')}>
-                            {dayjs(currentDate).format('MMMM YYYY').toUpperCase()}
+
+                        <h3 className="current-date">
+                            {currentDate.format('MMMM YYYY').toUpperCase()}
                         </h3>
-                        <span id="next" className="material-symbols-rounded" onClick={() => handlePrevNext('next')}>
+
+                        <span className="material-symbols-rounded" onClick={() => handlePrevNext('next')}>
                             {">"}
                         </span>
                     </div>
-                    <button className="today-button" onClick={handleToday}>Hoy</button>
                 </header>
-                <Calendar
-                    localizer={localizer}
-                    events={events}
-                    selectable
-                    onSelectSlot={handleSelectSlot}
-                    view={view}
-                    onView={() => {}}
-                    step={15}
-                    timeslots={1}
-                    date={currentDate}
-                    startAccessor="start"
-                    endAccessor="end"
-                    style={{ height:"calc(100vh - 60px)" }}
-                    messages={{
-                        month: 'Mes',
-                        week: 'Semana',
-                        day: 'Día',
-                        today: 'Hoy',
-                        previous: 'Atrás',
-                        next: 'Siguiente',
-                        showMore: (total) => `+${total} más`
-                    }}
-                    min={new Date(2023, 0, 1, 9, 0)} // Configuración de la hora mínima a las 9:00
-                    max={new Date(2023, 0, 1, 17, 0)} // Configuración de la hora máxima a las 17:00
-                    formats={{
-                        dayFormat: (date, culture, localizer) =>
-                            localizer.format(date, 'ddd DD', culture).toUpperCase(), // Formato de los días de la semana
-                        dayHeaderFormat: (date, culture, localizer) =>
-                            localizer.format(date, 'dddd DD', culture).toUpperCase(), // Formato del encabezado del día
-                    }}
-                    culture='es' // Asegurar que los días se muestren en español
-                    onNavigate={handleNavigate}
-                />
+
+                <div className="calendar-body">
+                    <div className="days">
+                        {Array.from({ length: 7 }, (_, i) => (
+                            <div key={i} className={`day-slot ${isToday(currentDate.startOf('week').add(i, 'day')) ? 'day-today' : ''}`}>
+                                {currentDate.startOf('week').add(i, 'day').format('ddd D').toUpperCase()}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="hours">
+                        {Array.from({ length: 33 }, (_, i) => (
+                            <div key={i} className="hour">
+                                {Math.floor(i / 4) + 9}:{(i % 4) * 15 === 0 ? '00' : (i % 4) * 15}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="days-slots">
+                        {Array.from({ length: 7 }, (_, i) => (
+                            <div key={i} className="day-slot">
+                                {Array.from({ length: 33 }, (_, j) => (
+                                    <button
+                                        key={j}
+                                        className={`time-slot ${occupiedTimes[currentDate.startOf('week').add(i, 'day').set('hour', Math.floor(j / 4) + 6).set('minute', (j % 4) * 15).format()]
+                                            ? 'occupied'
+                                            : ''
+                                            }`}
+                                        onClick={() => handleDayClick(currentDate.startOf('week').add(i, 'day').set('hour', Math.floor(j / 4) + 6).set('minute', (j % 4) * 15))}
+                                    >
+                                        {Math.floor(j / 4) + 9}:{(j % 4) * 15 === 0 ? '00' : (j % 4) * 15}
+                                    </button>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
             {ventanaAbierta && openRequestTurn && (
                 <RequestTurn
-                    dateTime={selectedEvent}
+                    dateTime={selectedDate}
                     onConfirmTurn={confirmTurn}
                     onClose={() => {
                         setVentanaAbierta(false);

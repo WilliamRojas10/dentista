@@ -11,7 +11,7 @@ import RequestTurn from './components/RequestTurn.jsx';
 import RegisterTurn from './components/RegisterTurn.jsx';
 import Prueba from './components/Prueba.jsx';
 import Calendario from './components/Calendar.jsx';
-
+import Diary from './components/Diary.jsx';
 function App() {
   return (
     <Router>
@@ -27,6 +27,7 @@ function App() {
         <Route path="/registerTurn" element={<RegisterTurn />} />
         <Route path="/prueba" element={<Prueba />} />
         <Route path="/calendario" element={<Calendario />} />
+        <Route path="/diary" element={<Diary />} />
       </Routes>
     </Router>
   );
