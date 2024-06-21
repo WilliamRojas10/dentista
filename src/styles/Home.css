@@ -1,5 +1,5 @@
-.home{
-   background-color: rgb(243, 230, 255);
+.home {
+    background-color: rgb(243, 230, 255);
 }
 
 /* .home .presentation{
@@ -18,26 +18,58 @@
 } */
 
 .home .main {
-  
-    
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
-    padding:2rem;
-   }
+    /* margin-top: 2rem;
+    padding: 2rem; */
+}
 
-.home .main .infographics {
+.home .main .container-infographics {
+    /* border: solid 1px var(--negro); */
+    background: linear-gradient(rgb(243, 230, 255),rgba(173, 15, 15, 0.164));
+    /* padding: 2em;*/
+    margin-bottom: 2em; 
+    box-shadow: 0 20px 20px var(--blanco);
+}
+
+.home .main .container-infographics .subtitle {
+    font-size: 2em;
+    padding: 1em;
+    text-align: center;
+}
+
+.home .main .container-infographics {
+    display: grid;
+    padding-bottom: 1rem;
+}
+
+.home .main .container-infographics .infographics {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 1rem 0;
+}
+
+/*---COMPONENT SHIFT BAR*/
+.home .main .container-infographics .shift-bar {
+    grid-column: 1/3;
+    /* margin: 0 20%; */
 }
 
 
 /*RESPONSIVE*/
-@media screen and (max-width: 920px){
-    .home .main .infographics {
+@media screen and (max-width: 920px) {
+
+    /*---COMPONENT INFOGRAPHIC------*/
+    .home .main .container-infographics .infographics {
         display: grid;
         grid-template-columns: 1fr;
         gap: 1rem;
     }
+
+    .home .main .container-infographics .shift-bar {
+        grid-column: 1/2;
+        
+    }
+
+
 }

@@ -1,10 +1,10 @@
 import React from 'react'
 import '../styles/Infographic.css'
-function Infographic({ nameImg, urlImg, title, text }) {
+function Infographic({ name, urlImg, title, text }) {
     return (
         <div className='infographic'>
             <div className='container-img'>
-                <img className={nameImg} src={urlImg} alt={nameImg} />
+                <img className={name} src={urlImg} alt={name} />
             </div>
             <div className='container-text'>
                 <h3>{title}</h3>

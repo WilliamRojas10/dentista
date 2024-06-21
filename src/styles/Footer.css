@@ -1,6 +1,6 @@
 .footer .container {
     background-color: rgb(114, 134, 190);
-color: #fff;
+    color: #fff;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 5rem;
@@ -33,20 +33,31 @@ color: #fff;
 
 .footer .ad {
     text-align: center;
-    background-color: black;
+    background-color: var(--negro);
     padding: 2rem;
 }
 
-.footer .ad a {
+.footer .ad .ad-link {
     text-decoration: none;
-    color: rgb(255, 217, 0);
+    color: var(--blanco);
+    padding: 1em;
+    border-radius: 10px;
+    background-color: var(--negro);
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.footer .ad .ad-link:hover {
+    border: solid 2px var(--violeta);
+    background-color: black;
+    color: var(--violeta);
 }
 
 @media screen and (max-width: 920px) {
     .footer .container {
         grid-template-columns: 1fr;
         gap: 2rem;
-    padding: 2rem;
+        padding: 2rem;
 
     }
 

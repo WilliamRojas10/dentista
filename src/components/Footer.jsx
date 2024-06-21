@@ -30,7 +30,9 @@ export default function footer() {
         </div>
       </div>
       <div className='ad'>
-        <a href="https://www.linkedin.com">Creado por Magno 👑</a>
+        <a className='ad-link' target="_blank" href="https://www.linkedin.com">
+                  Creado por Magno {">"}
+        </a>
       </div>
     </div>
   )

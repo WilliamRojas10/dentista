@@ -13,10 +13,14 @@
 
 }
 
-.navigation header ul {
+.navigation header .menuOpen, .navigation header .menuClose {
     display: flex;
     gap: 1.5rem;
     list-style: none;
+}
+.navigation header ul li a  {
+    display: flex;
+    gap: 5px;
 }
 
 .navigation header ul li a,
@@ -32,10 +36,7 @@
     font-size: 1.5rem;
 }
 
-.navigation header ul li a:hover {
-    text-decoration: underline;
 
-}
 
 
 .menu-icon,

@@ -34,7 +34,7 @@ function Loguin(props) {
           <h2>SD ODONTOLOGIA{props.tienda}</h2>
           <Input
             nombreGrupo="usuario"
-            tipoInput="email"
+            tipoInput="text"
             label="DNI:"
             value={userDni}
             onChange={(e) => setUserDni(e.target.value)}

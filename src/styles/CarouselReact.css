@@ -5,12 +5,14 @@
 
 }
 
-.carousel-react .slider > .slick-dots .slick-active {
-z-index: 20;
+.carousel-react .slider  {
+    overflow:hidden;
+
 }
 
 .carousel-react img{
     width: 100%;
+    overflow:hidden;
  
     height: 100%;
 }
