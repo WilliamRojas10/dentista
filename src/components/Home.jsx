@@ -15,22 +15,18 @@ function Home() {
       <Navigation />
       <div className="presentation">
 
-        <CarouseReact />
+       <CarouseReact />
 
-        {/* <div className="wave" style={{ height: '150px', overflow: 'hidden' }}>
-          <svg viewBox="0 0 500 150" preserveAspectRatio="none" style={{ height: '100%', width: '100%' }}>
-            <path d="M83.23,110.05 C289.78,67.61 162.24,198.86 528.49,100.17 L500.00,150.00 L-57.84,153.47 Z" style={{ stroke: 'none', fill: 'rgb(256,256,256)' }} />
-          </svg>
-        </div> */}
+       
 
       </div>
 
 
 
       <main className='main'>
-        <div className="container-infographics">
+        <div className="container-main">
         <h3 className='subtitle'>Odontologia</h3>
-          <div className="infographics">
+          <div className="container-infographics">
             
             <Infographic
               name='implantes'
@@ -85,9 +81,9 @@ function Home() {
             />
           </div>
         </div>
-        <div className="container-infographics">
+        <div className="container-main">
           <h3 className='subtitle'>Psicología</h3>
-          <div className="infographics">
+          <div className="container-infographics">
 
             <Infographic
               name='consulta'
@@ -131,6 +127,11 @@ function Home() {
         </div>
 
       </main>
+      <div className="wave" style={{ height: '100px', overflow: 'hidden' }}>
+          <svg viewBox="0 0 500 150" preserveAspectRatio="none" style={{ height: '100%', width: '100%' }}>
+            <path d="M83.23,110.05 C289.78,67.61 162.24,198.86 528.49,100.17 L500.00,150.00 L-57.84,153.47 Z" style={{ stroke: 'none', fill: 'rgb(122, 114, 190)' }} />
+          </svg>
+        </div>
       <Footer />
     </div>
   )

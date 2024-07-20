@@ -15,10 +15,17 @@ const Calendario = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [occupiedTimes, setOccupiedTimes] = useState({});
     const [currentDate, setCurrentDate] = useState(dayjs());
+    const [disabledDays, setDisabledDays] = useState({});
 
     useEffect(() => {
         // Fetch data from the database and set occupiedTimes
         // Example: setOccupiedTimes({ '2024-06-11T09:00:00': true });
+
+        // Disable all slots on Monday (1) and Wednesday (3)
+        disableDayTimeButtons(2); // Disable all Monday
+        disableDayTimeButtons(4); // Disable all Monday
+
+        disableDayTimeButtons(3, 9, 12); // Disable Wednesday from 9:00 to 12:00
     }, []);
 
     const handlePrevNext = (type) => {
@@ -31,7 +38,6 @@ const Calendario = () => {
 
     const handleDayClick = (date) => {
         setSelectedDate(date);
-        console.log(currentDate.$H);
         setVentanaAbierta(true);
         setOpenRequestTurn(true);
     };
@@ -59,11 +65,17 @@ const Calendario = () => {
         return date.isSame(dayjs(), 'day');
     };
 
-
     const handleOpenDiary = () => {
         setOpenDiary(!openDiary);
-        console.log(openDiary);
     };
+
+    const disableDayTimeButtons = (day, startHour = 0, endHour = 24) => {
+        setDisabledDays((prev) => ({
+            ...prev,
+            [day]: { startHour, endHour },
+        }));
+    };
+
     return (
         <div className="calendar-container">
             <Navigation />
@@ -79,7 +91,6 @@ const Calendario = () => {
                     <span className="btn-today" onClick={handleToday}>
                         Hoy
                     </span>
-
                 </div>
                 <header>
                     <div className="icons">
@@ -114,22 +125,32 @@ const Calendario = () => {
                         ))}
                     </div>
                     <div className="days-slots">
-                        {Array.from({ length: 7 }, (_, i) => (
-                            <div key={i} className="day-slot">
-                                {Array.from({ length: 33 }, (_, j) => (
-                                    <button
-                                        key={j}
-                                        className={`time-slot ${occupiedTimes[currentDate.startOf('week').add(i, 'day').set('hour', Math.floor(j / 4) + 6).set('minute', (j % 4) * 15).format()]
-                                            ? 'occupied'
-                                            : ''
-                                            }`}
-                                        onClick={() => handleDayClick(currentDate.startOf('week').add(i, 'day').set('hour', Math.floor(j / 4) + 6).set('minute', (j % 4) * 15))}
-                                    >
-                                        {Math.floor(j / 4) + 9}:{(j % 4) * 15 === 0 ? '00' : (j % 4) * 15}
-                                    </button>
-                                ))}
-                            </div>
-                        ))}
+                        {Array.from({ length: 7 }, (_, i) => {
+                            const dayOfWeek = (currentDate.startOf('week').add(i, 'day').day() + 7) % 7 + 1;
+                            const disabledDay = disabledDays[dayOfWeek];
+
+                            return (
+                                <div key={i} className="day-slot">
+                                    {Array.from({ length: 33 }, (_, j) => {
+                                        const hour = Math.floor(j / 4) + 6;
+                                        const minute = (j % 4) * 15;
+                                        const date = currentDate.startOf('week').add(i, 'day').set('hour', hour).set('minute', minute);
+                                        const isDisabled = disabledDay && hour >= disabledDay.startHour && hour < disabledDay.endHour;
+
+                                        return (
+                                            <button
+                                                key={j}
+                                                className={`time-slot ${occupiedTimes[date.format()] ? 'occupied' : ''}`}
+                                                onClick={() => handleDayClick(date)}
+                                                disabled={isDisabled}
+                                            >
+                                                {Math.floor(j / 4) + 9}:{minute === 0 ? '00' : minute}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

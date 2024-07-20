@@ -14,7 +14,7 @@
     bottom: 0%;
     left: 0;
     width: 100%;
-    
+
 } */
 
 .home .main {
@@ -24,35 +24,36 @@
     padding: 2rem; */
 }
 
-.home .main .container-infographics {
-    /* border: solid 1px var(--negro); */
-    background: linear-gradient(rgb(243, 230, 255),rgba(173, 15, 15, 0.164));
-    /* padding: 2em;*/
-    margin-bottom: 2em; 
-    box-shadow: 0 20px 20px var(--blanco);
-}
 
-.home .main .container-infographics .subtitle {
+.home .main .container-main .subtitle {
     font-size: 2em;
-    padding: 1em;
+   padding-top: 1rem;
     text-align: center;
 }
 
-.home .main .container-infographics {
+.home .main .container-main {
     display: grid;
-    padding-bottom: 1rem;
+      /* border: solid 1px var(--negro); */
+      background: linear-gradient(rgb(243, 230, 255),rgba(173, 15, 15, 0.164));
+      /* padding: 2em;*/
+      gap: 1rem;
+      margin-bottom: 2em;/*Para que se vea la sombra*/
+      box-shadow: 0 20px 20px var(--blanco);
 }
 
-.home .main .container-infographics .infographics {
+.home .main .container-main .container-infographics {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem 0;
+    padding: 1rem;
+    gap: 1rem;
 }
 
 /*---COMPONENT SHIFT BAR*/
-.home .main .container-infographics .shift-bar {
+.home .main .container-main .shift-bar {
     grid-column: 1/3;
-    /* margin: 0 20%; */
+    width:  60%;
+    display: flex;
+    justify-self: center;
 }
 
 
@@ -60,15 +61,15 @@
 @media screen and (max-width: 920px) {
 
     /*---COMPONENT INFOGRAPHIC------*/
-    .home .main .container-infographics .infographics {
+    .home .main .container-main .container-infographics {
         display: grid;
         grid-template-columns: 1fr;
         gap: 1rem;
     }
 
-    .home .main .container-infographics .shift-bar {
+    .home .main .container-main .shift-bar {
         grid-column: 1/2;
-        
+        width: 90%;
     }
 
 
