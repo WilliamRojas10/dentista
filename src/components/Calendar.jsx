@@ -11,21 +11,41 @@ dayjs.locale('es');
 const Calendario = () => {
     const [openDiary, setOpenDiary] = useState(false);
     const [ventanaAbierta, setVentanaAbierta] = useState(false);
-    const [openRequestTurn, setOpenRequestTurn] = useState(false);
+    const [openRequestTurn, setOpenRequestTurn] = useState(false); //diary
     const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedDay, setSelectedDay] = useState(null);
     const [occupiedTimes, setOccupiedTimes] = useState({});
     const [currentDate, setCurrentDate] = useState(dayjs());
     const [disabledDays, setDisabledDays] = useState({});
+    const [turnos, setTurnos] = useState([]);
 
     useEffect(() => {
-        // Fetch data from the database and set occupiedTimes
-        // Example: setOccupiedTimes({ '2024-06-11T09:00:00': true });
+        // Fetch turnos from the API
+        const fetchTurnos = async () => {
+            try {
+                const response = await fetch('http://localhost:5292/api/Turnos/ListarTurnos');
+                const data = await response.json();
+                setTurnos(data);
+                
+                const occupied = {};
+                data.forEach(turno => {
+                    const startTime = dayjs(turno.fechaTurno);
+                    for (let i = 0; i < turno.duracionTratamiento / 15; i++) {
+                        const timeSlot = startTime.add(i * 15, 'minute');
+                        occupied[timeSlot.format()] = true;
+                    }
+                });
+                setOccupiedTimes(occupied);
+            } catch (error) {
+                console.error('Error fetching turnos:', error);
+            }
+        };
+        
+        fetchTurnos();
 
-        // Disable all slots on Monday (1) and Wednesday (3)
-        disableDayTimeButtons(2); // Disable all Monday
-        disableDayTimeButtons(4); // Disable all Monday
-
-        disableDayTimeButtons(3, 9, 12); // Disable Wednesday from 9:00 to 12:00
+        // Disable specific days or time slots
+        disableButtonsDayTime(1, 15, 21); // Example
     }, []);
 
     const handlePrevNext = (type) => {
@@ -38,6 +58,8 @@ const Calendario = () => {
 
     const handleDayClick = (date) => {
         setSelectedDate(date);
+        setSelectedTime(date.format('HH:mm'));
+        setSelectedDay(date.format('YYYY-MM-DD'));
         setVentanaAbierta(true);
         setOpenRequestTurn(true);
     };
@@ -69,17 +91,35 @@ const Calendario = () => {
         setOpenDiary(!openDiary);
     };
 
-    const disableDayTimeButtons = (day, startHour = 0, endHour = 24) => {
+    const convertDateToDayNumber = (date) => {
+        const day = typeof date === 'string' ? dayjs(date) : dayjs(date);
+        return (day.day() === 0 ? 7 : day.day());
+    };
+
+    const disableButtonsDayTime = (day, startHour = 0, endHour = 24) => {
         setDisabledDays((prev) => ({
             ...prev,
             [day]: { startHour, endHour },
         }));
     };
 
+    const generateTimeSlots = (start, end, interval) => {
+        const slots = [];
+        let current = start;
+        while (current < end) {
+            slots.push(current);
+            current = current.add(interval, 'minute');
+        }
+        return slots;
+    };
+
+    const timeSlots = generateTimeSlots(dayjs().hour(9).minute(0), dayjs().hour(21).minute(0), 15);
+
     return (
         <div className="calendar-container">
             <Navigation />
-            {openDiary && <Diary onOpen={handleOpenDiary} />}
+            {openDiary && <Diary onOpen={handleOpenDiary}
+            turnConfirmed={openRequestTurn} />}
             <div className={openDiary ? "calendar-weekly reduced" : "calendar-weekly"}>
                 <div className='nav'>
                     <span className="btn-today" onClick={handleOpenDiary}>
@@ -118,9 +158,9 @@ const Calendario = () => {
                     </div>
 
                     <div className="hours">
-                        {Array.from({ length: 33 }, (_, i) => (
+                        {timeSlots.map((slot, i) => (
                             <div key={i} className="hour">
-                                {Math.floor(i / 4) + 9}:{(i % 4) * 15 === 0 ? '00' : (i % 4) * 15}
+                                {slot.format('HH:mm')}
                             </div>
                         ))}
                     </div>
@@ -131,20 +171,21 @@ const Calendario = () => {
 
                             return (
                                 <div key={i} className="day-slot">
-                                    {Array.from({ length: 33 }, (_, j) => {
-                                        const hour = Math.floor(j / 4) + 6;
-                                        const minute = (j % 4) * 15;
-                                        const date = currentDate.startOf('week').add(i, 'day').set('hour', hour).set('minute', minute);
-                                        const isDisabled = disabledDay && hour >= disabledDay.startHour && hour < disabledDay.endHour;
+                                    {timeSlots.map((slot, j) => {
+                                        const date = currentDate.startOf('week').add(i, 'day').set('hour', slot.hour()).set('minute', slot.minute());
+                                        const formattedDate = date.format();
+                                        const isOccupied = occupiedTimes[formattedDate];
+                                        const isSelected = selectedDate && selectedDate.isSame(date);
+                                        const isDisabled = disabledDay && slot.hour() >= disabledDay.startHour && slot.hour() < disabledDay.endHour;
 
                                         return (
                                             <button
                                                 key={j}
-                                                className={`time-slot ${occupiedTimes[date.format()] ? 'occupied' : ''}`}
+                                                className={`time-slot ${isOccupied ? 'occupied' : ''} ${isSelected ? 'selected' : ''}`}
                                                 onClick={() => handleDayClick(date)}
-                                                disabled={isDisabled}
+                                                disabled={isOccupied || isDisabled}
                                             >
-                                                {Math.floor(j / 4) + 9}:{minute === 0 ? '00' : minute}
+                                                {slot.format('HH:mm')}
                                             </button>
                                         );
                                     })}
@@ -156,7 +197,9 @@ const Calendario = () => {
             </div>
             {ventanaAbierta && openRequestTurn && (
                 <RequestTurn
-                    dateTime={selectedDate}
+                    day={convertDateToDayNumber(selectedDay)}
+                    time={selectedTime}
+                    datetime={selectedDay}
                     onConfirmTurn={confirmTurn}
                     onClose={() => {
                         setVentanaAbierta(false);

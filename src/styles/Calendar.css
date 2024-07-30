@@ -172,16 +172,21 @@
 }
 
 .time-slot:hover {
-    transition: background-color 0.2s ease;
-    background-color: #9b59b6;
-    color: #fff;
+    transition: font-weight 0.5s ease;
+    font-weight:900;
+    transition: border 0.4ms ease;
+
+    border: solid 3px #9b59b6;
+    color: #9b59b6;
+   
 }
 
 .calendar-body .occupied {
-    background-color: #3a8efd;
+    background-color:#7f4f91;/* #3a8efd*/
     color: #fff;
     pointer-events: none;
 }
+
 
 
 
