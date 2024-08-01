@@ -1,5 +1,6 @@
 
 
+
 .request-turn{
     width: 60vw;
     
@@ -50,6 +51,16 @@
 
 .request-turn .treatments{
     margin: 0;
+}
+
+.request-turn p span{
+    font-weight: 700;
+    color: var(--violeta);
+}
+
+.request-turn p{
+    font-size: 1em;
+    font-weight: 500;
 }
 
 @media screen and (max-width: 600px) {

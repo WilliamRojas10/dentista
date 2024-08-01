@@ -6,18 +6,19 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-.calendar-container{
+
+.calendar-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
-    /* gap: 1rem 0; */
 }
+
 .calendar-container .navigation {
     grid-row: 1/2;
     grid-column: 1/4;
-
 }
-.calendar-container .diary{
+
+.calendar-container .diary {
     grid-row: 2/3;
     grid-column: 1/2;
 }
@@ -25,13 +26,10 @@
 .calendar-container .calendar-weekly {
     grid-row: 2/3;
     grid-column: 1/4;
-
-
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
     overflow-y: scroll;
-    transform-origin: top left;
     height: 84vh;
 }
 
@@ -40,28 +38,29 @@
     grid-column: 2/4;
 }
 
-/*--BUTTONS--*/
-.calendar-container .calendar-weekly .nav{
+/* Botones */
+.calendar-container .calendar-weekly .nav {
     display: flex;
     justify-content: space-around;
     padding: 1rem 0;
     border: solid 1px rgb(214, 214, 214);
 }
+
 .calendar-container .calendar-weekly .nav .btn-today {
     border: solid 1px rgb(214, 214, 214);
-     color: #9b59b6;
-    
-     padding: 2px 10px;
-     border-radius: 5px;
-     font-size: 15px;/*TODO Cambiar por tamaño relativo*/
-     cursor: pointer;
-     font-weight: 600;
- }
- .calendar-container .calendar-weekly .nav .btn-today:hover{
-     background-color: rgb(212, 212, 212) ;
- }
+    color: #9b59b6;
+    padding: 2px 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: 600;
+}
 
- /*--HEADER, MOUNTH, BACK Y NEXT --*/
+.calendar-container .calendar-weekly .nav .btn-today:hover {
+    background-color: rgb(212, 212, 212);
+}
+
+/* Encabezado y Navegación del Mes */
 .calendar-container .calendar-weekly header {
     display: flex;
     justify-content: center;
@@ -78,39 +77,30 @@
 .calendar-weekly header .icons span {
     height: 38px;
     width: 38px;
-    margin: 0 1px;
     cursor: pointer;
     color: #878787;
     text-align: center;
     line-height: 38px;
     font-size: 1.9rem;
-    user-select: none;
     border-radius: 50%;
-}
-
-.calendar-weekly header .icons span:last-child {
-    margin-right: -10px;
 }
 
 .calendar-weekly header .icons span:hover {
     background: #f2f2f2;
 }
 
-
-
-
 .calendar-weekly header .current-date {
     font-size: 1.45rem;
     font-weight: 500;
 }
 
+/* Cuerpo del Calendario */
 .calendar-body {
     display: grid;
     grid-template-columns: minmax(30px, 100px) 1fr;
     grid-template-rows: auto 1fr;
 }
 
-/* Días de la semana */
 .days {
     grid-row: 1/2;
     grid-column: 2/2;
@@ -132,7 +122,7 @@
     border-radius: 10px;
 }
 
-/* Columna de horarios de trabajo */
+/* Columna de Horarios */
 .hours {
     grid-column: 1/2;
     grid-row: 2/2;
@@ -141,13 +131,11 @@
 
 .hour {
     padding: 1rem 0;
-    width: 100%;
-    height: 50px;
     border-top: 1px solid #ddd;
     background-color: #f5f5f5;
 }
 
-/* Horarios de cada día */
+/* Horarios de Cada Día */
 .days-slots {
     grid-row: 2/2;
     grid-column: 2/2;
@@ -156,7 +144,7 @@
 }
 
 .days-slots .day-slot {
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; /* Borde entre los botones de horarios*/
 }
 
 .time-slot {
@@ -165,24 +153,19 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     text-align: center;
     padding: 1rem;
 }
 
 .time-slot:hover {
-    transition: font-weight 0.5s ease;
-    font-weight:900;
-    transition: border 0.4ms ease;
-
+    font-weight: 900;
     border: solid 3px #9b59b6;
     color: #9b59b6;
-   
 }
 
 .calendar-body .occupied {
-    background-color:#7f4f91;/* #3a8efd*/
+    background-color: #7f4f91;
     color: #fff;
     pointer-events: none;
 }
@@ -191,34 +174,45 @@
 
 
 
+.time-slot {
+    width: 100%;
+    height: 50px;
+    background: none;
+    border: 1px solid transparent; /* Define un borde transparente por defecto */
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    padding: 1rem;
+    transition: border 0.2s ease; /* Transición suave para el cambio de borde */
+}
+
+.time-slot:hover,
+.time-slot.selected {
+    border: 3px solid var(--violeta); /* Aplica el borde violeta al seleccionar o al pasar el mouse */
+    color: var(--violeta);
+    font-weight: 900;
+}
+
+
+
+/*---------------------------------- RESPONSIVE ----------------------------------*/
 @media (max-width: 700px) {
     .calendar-container {
         grid-template-columns: 1fr;
         padding: 0 5px;
     }
 
-    .calendar-container .diary{ /*AGENDA*/
+    .calendar-container .diary {
         position: absolute;
         top: 0;
-        left: 0;    
+        left: 0;
         height: 100vh;
     }
 
-    .days .day-slot {
-        font-size: 0.8rem;
-    }
-
-    .hours .hour {
-        font-size: 0.8rem;
-    }
-
-    .days-slots .day-slot {
-        font-size: 0.8rem;
-    }
-
+    .days .day-slot,
+    .hours .hour,
+    .days-slots .day-slot,
     .time-slot {
         font-size: 0.8rem;
-        padding: 5px;
     }
-    
 }

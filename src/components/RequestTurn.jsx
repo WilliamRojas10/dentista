@@ -5,8 +5,12 @@ import { RxCross2 } from "react-icons/rx";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoPersonOutline } from "react-icons/io5";
 import { LiaUserNurseSolid } from "react-icons/lia";
+import { MdOutlineTimer } from "react-icons/md";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoMdTime } from "react-icons/io";
+import dayjs from 'dayjs';
+import 'dayjs/locale/es'; // Para usar la localización en español
+
 
 const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
     const [nombreProfesional, setNombreProfesional] = useState("");
@@ -60,7 +64,7 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
         const datos = {
             fechaTurno: `${datetime}T${time}:00`,
             turnoEstado: 1,
-            idPaciente: 1, // Ajusta según sea necesario
+            idPaciente: 2, // Ajusta según sea necesario
             dniProfesional: dniProfesional, // Ajusta según sea necesario
             idTratamiento: idTratamiento
         };
@@ -84,6 +88,16 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
 
    // const horarioFinal = duration ? sumarMinutos(time, parseInt(duration)) : time;
 
+   function formatearFecha(fechaString) {
+    // Convertimos la cadena de texto a un objeto de fecha usando dayjs
+    const fecha = dayjs(fechaString);
+    
+    // Formateamos la fecha según el patrón deseado
+    const fechaFormateada = fecha.locale('es').format('dddd D [de] MMMM [de] YYYY' );
+    
+    return fechaFormateada;
+  }
+
     return (
         <div className="request-turn">
             <button onClick={onClose} className="close"><RxCross2 /></button>
@@ -101,11 +115,12 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
                     handleSelectChange={getSelectedValue}
                 />
             )}
-            <p><FaRegCalendarAlt /> {`Fecha: ${day}  ${time} ${completionTime}`}</p>
-            <p><IoMdTime /> Hora: {duration} minutos </p>
-            <p><LiaUserNurseSolid /> Especialista: {nombreProfesional}</p>
-            <p><IoPersonOutline /> Nombre Paciente - Dni:</p>
-            <p><RiMoneyDollarCircleLine /> Precio: ${precioTratamiento}</p>
+            <p><FaRegCalendarAlt /> <span>Fecha: </span> {formatearFecha(datetime)}</p>
+            <p><IoMdTime /> <span>Horario: </span> {`${time} ${completionTime}`} </p>
+            <p><MdOutlineTimer/> <span>Duración: </span> {duration} minutos </p>
+            <p><LiaUserNurseSolid /> <span>Especialista: </span> {nombreProfesional}</p>
+            {/* <p><IoPersonOutline /> <span>Nombre Paciente - Dni: </span></p> */}
+            <p><RiMoneyDollarCircleLine /> <span>Precio: </span> ${precioTratamiento}</p>
             <button className="submit" onClick={actualizarDuracion}>Confirmar</button>
         </div>
     );

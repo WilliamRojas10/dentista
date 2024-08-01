@@ -10,42 +10,43 @@ dayjs.locale('es');
 
 const Calendario = () => {
     const [openDiary, setOpenDiary] = useState(false);
-    const [ventanaAbierta, setVentanaAbierta] = useState(false);
-    const [openRequestTurn, setOpenRequestTurn] = useState(false); //diary
+    const [openRequestTurn, setOpenRequestTurn] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
     const [occupiedTimes, setOccupiedTimes] = useState({});
+    const [lastTimeSlots, setLastTimeSlots] = useState({});
     const [currentDate, setCurrentDate] = useState(dayjs());
     const [disabledDays, setDisabledDays] = useState({});
-    const [turnos, setTurnos] = useState([]);
 
     useEffect(() => {
-        // Fetch turnos from the API
         const fetchTurnos = async () => {
             try {
                 const response = await fetch('http://localhost:5292/api/Turnos/ListarTurnos');
                 const data = await response.json();
-                setTurnos(data);
-                
+
                 const occupied = {};
+                const lastSlots = {};
                 data.forEach(turno => {
                     const startTime = dayjs(turno.fechaTurno);
-                    for (let i = 0; i < turno.duracionTratamiento / 15; i++) {
+                    const durationSlots = turno.duracionTratamiento / 15;
+                    for (let i = 0; i < durationSlots; i++) {
                         const timeSlot = startTime.add(i * 15, 'minute');
                         occupied[timeSlot.format()] = true;
+                        if (i === durationSlots - 1) {
+                            lastSlots[timeSlot.format()] = true;
+                        }
                     }
                 });
                 setOccupiedTimes(occupied);
+                setLastTimeSlots(lastSlots);
             } catch (error) {
                 console.error('Error fetching turnos:', error);
             }
         };
-        
-        fetchTurnos();
 
-        // Disable specific days or time slots
-        disableButtonsDayTime(1, 15, 21); // Example
+        fetchTurnos();
+        disableButtonsDayTime(7, 1, 23); // Example
     }, []);
 
     const handlePrevNext = (type) => {
@@ -59,8 +60,7 @@ const Calendario = () => {
     const handleDayClick = (date) => {
         setSelectedDate(date);
         setSelectedTime(date.format('HH:mm'));
-        setSelectedDay(date.format('YYYY-MM-DD'));
-        setVentanaAbierta(true);
+        setSelectedDay(date.format('YYYY-MM-DD')); 
         setOpenRequestTurn(true);
     };
 
@@ -79,7 +79,6 @@ const Calendario = () => {
             return newOccupiedTimes;
         });
 
-        setVentanaAbierta(false);
         setOpenRequestTurn(false);
     };
 
@@ -96,10 +95,14 @@ const Calendario = () => {
         return (day.day() === 0 ? 7 : day.day());
     };
 
+    const dayjsToCustomDayNumber = (day) => {
+        return (day + 6) % 7 + 1;
+    };
+
     const disableButtonsDayTime = (day, startHour = 0, endHour = 24) => {
         setDisabledDays((prev) => ({
             ...prev,
-            [day]: { startHour, endHour },
+            [dayjsToCustomDayNumber(day)]: { startHour, endHour },
         }));
     };
 
@@ -118,8 +121,7 @@ const Calendario = () => {
     return (
         <div className="calendar-container">
             <Navigation />
-            {openDiary && <Diary onOpen={handleOpenDiary}
-            turnConfirmed={openRequestTurn} />}
+            {openDiary && <Diary onOpen={handleOpenDiary} />}
             <div className={openDiary ? "calendar-weekly reduced" : "calendar-weekly"}>
                 <div className='nav'>
                     <span className="btn-today" onClick={handleOpenDiary}>
@@ -166,7 +168,7 @@ const Calendario = () => {
                     </div>
                     <div className="days-slots">
                         {Array.from({ length: 7 }, (_, i) => {
-                            const dayOfWeek = (currentDate.startOf('week').add(i, 'day').day() + 7) % 7 + 1;
+                            const dayOfWeek = dayjsToCustomDayNumber(currentDate.startOf('week').add(i, 'day').day());
                             const disabledDay = disabledDays[dayOfWeek];
 
                             return (
@@ -177,6 +179,7 @@ const Calendario = () => {
                                         const isOccupied = occupiedTimes[formattedDate];
                                         const isSelected = selectedDate && selectedDate.isSame(date);
                                         const isDisabled = disabledDay && slot.hour() >= disabledDay.startHour && slot.hour() < disabledDay.endHour;
+                                        const isLastSlot = lastTimeSlots[formattedDate];
 
                                         return (
                                             <button
@@ -184,6 +187,7 @@ const Calendario = () => {
                                                 className={`time-slot ${isOccupied ? 'occupied' : ''} ${isSelected ? 'selected' : ''}`}
                                                 onClick={() => handleDayClick(date)}
                                                 disabled={isOccupied || isDisabled}
+                                                style={isLastSlot ? { borderBottom: '2px solid white' } : {}}
                                             >
                                                 {slot.format('HH:mm')}
                                             </button>
@@ -195,14 +199,13 @@ const Calendario = () => {
                     </div>
                 </div>
             </div>
-            {ventanaAbierta && openRequestTurn && (
+            {openRequestTurn && (
                 <RequestTurn
                     day={convertDateToDayNumber(selectedDay)}
                     time={selectedTime}
                     datetime={selectedDay}
                     onConfirmTurn={confirmTurn}
                     onClose={() => {
-                        setVentanaAbierta(false);
                         setOpenRequestTurn(false);
                     }}
                 />
