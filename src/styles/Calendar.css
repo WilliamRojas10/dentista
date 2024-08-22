@@ -165,8 +165,9 @@
 }
 
 .calendar-body .occupied {
-    background-color: #7f4f91;
-    color: #fff;
+    background-color: #FFCCCC;
+    
+    color: #000000;
     pointer-events: none;
 }
 
@@ -192,6 +193,7 @@
     color: var(--violeta);
     font-weight: 900;
 }
+
 
 
 

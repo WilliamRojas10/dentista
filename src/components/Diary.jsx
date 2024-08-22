@@ -23,7 +23,7 @@ function Diary({ onOpen, turnConfirmed }) /*AbrirVentana y actualizar la agenda*
         // Fetch turnos from the API
         const fetchTurnos = async () => {
             try {
-                const response = await fetch('http://localhost:5292/api/Turnos/ListaTurnos/2');
+                const response = await fetch('http://localhost:5292/api/Turnos/ListaTurnosPorIdPaciente/1');
                 const data = await response.json();
                 
                 // Ordenar los turnos por fecha y hora de forma descendente

@@ -10,7 +10,7 @@ import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoMdTime } from "react-icons/io";
 import dayjs from 'dayjs';
 import 'dayjs/locale/es'; // Para usar la localización en español
-
+import Warning from './Warning'; // Importar el componente de advertencia
 
 const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
     const [nombreProfesional, setNombreProfesional] = useState("");
@@ -21,11 +21,11 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
     const [completionTime, setCompletionTime] = useState("");
     const [tratamientos, setTratamientos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null); // Estado para el error
 
     // Obtener tratamientos
     useEffect(() => {
-        axios.get(`http://localhost:5292/api/Tratamientos/${encodeURIComponent(time)}/${day}`) // Asegúrate de que la URL sea la correcta
+        axios.get(`http://localhost:5292/api/Tratamientos/ObtenerTratamientosPorProfesional/22223333`)
             .then(response => {
                 console.log('Tratamientos:', response.data); // Para depuración
                 setTratamientos(response.data);
@@ -40,7 +40,6 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
 
     const actualizarDuracion = () => {
         enviarDatos();
-        onConfirmTurn(duration);
     };
 
     const getSelectedValue = (event) => {
@@ -59,21 +58,26 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
         }
     };
 
-    // Agendar turno
     const enviarDatos = async () => {
         const datos = {
             fechaTurno: `${datetime}T${time}:00`,
             turnoEstado: 1,
-            idPaciente: 2, // Ajusta según sea necesario
+            idPaciente: 1, // Ajusta según sea necesario
             dniProfesional: dniProfesional, // Ajusta según sea necesario
             idTratamiento: idTratamiento
         };
 
         try {
-            console.log(datos);
-            return await axios.post('http://localhost:5292/api/Turnos/AgendarTurno', datos);
+            const response = await axios.post('http://localhost:5292/api/Turnos/AgendarTurno', datos);
+            onConfirmTurn(duration);
         } catch (error) {
             console.error('Error al enviar datos:', error);
+            if (error.response && error.response.status === 400) {
+                // Si el error es 400, significa que hubo un conflicto
+                setError('El profesional ya tiene un turno programado en este horario.');
+            } else {
+                setError('Ocurrió un error al registrar el turno.');
+            }
         }
     };
 
@@ -86,17 +90,11 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
         return ` A ${horarioFinal} hs`; 
     };
 
-   // const horarioFinal = duration ? sumarMinutos(time, parseInt(duration)) : time;
-
-   function formatearFecha(fechaString) {
-    // Convertimos la cadena de texto a un objeto de fecha usando dayjs
-    const fecha = dayjs(fechaString);
-    
-    // Formateamos la fecha según el patrón deseado
-    const fechaFormateada = fecha.locale('es').format('dddd D [de] MMMM [de] YYYY' );
-    
-    return fechaFormateada;
-  }
+    function formatearFecha(fechaString) {
+        const fecha = dayjs(fechaString);
+        const fechaFormateada = fecha.locale('es').format('dddd D [de] MMMM [de] YYYY');
+        return fechaFormateada;
+    }
 
     return (
         <div className="request-turn">
@@ -104,7 +102,7 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
             {loading ? (
                 <p>Loading...</p>
             ) : error ? (
-                <p>Error loading treatments: {error.message}</p>
+                <Warning textWarning={error} closeWarning={() => setError(null)} />
             ) : (
                 <ListaPlegable
                     placeholder={"Tratamientos"}
@@ -119,7 +117,6 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
             <p><IoMdTime /> <span>Horario: </span> {`${time} ${completionTime}`} </p>
             <p><MdOutlineTimer/> <span>Duración: </span> {duration} minutos </p>
             <p><LiaUserNurseSolid /> <span>Especialista: </span> {nombreProfesional}</p>
-            {/* <p><IoPersonOutline /> <span>Nombre Paciente - Dni: </span></p> */}
             <p><RiMoneyDollarCircleLine /> <span>Precio: </span> ${precioTratamiento}</p>
             <button className="submit" onClick={actualizarDuracion}>Confirmar</button>
         </div>

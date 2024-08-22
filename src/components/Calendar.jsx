@@ -22,22 +22,27 @@ const Calendario = () => {
     useEffect(() => {
         const fetchTurnos = async () => {
             try {
-                const response = await fetch('http://localhost:5292/api/Turnos/ListarTurnos');
+                const response = await fetch('http://localhost:5292/api/Turnos/ListarTurnos/22223333');
                 const data = await response.json();
 
                 const occupied = {};
                 const lastSlots = {};
+
                 data.forEach(turno => {
                     const startTime = dayjs(turno.fechaTurno);
-                    const durationSlots = turno.duracionTratamiento / 15;
-                    for (let i = 0; i < durationSlots; i++) {
-                        const timeSlot = startTime.add(i * 15, 'minute');
-                        occupied[timeSlot.format()] = true;
-                        if (i === durationSlots - 1) {
-                            lastSlots[timeSlot.format()] = true;
+                    const slotCount = turno.duracionTratamiento / 15;
+
+                    for (let i = 0; i < slotCount; i++) {
+                        const timeSlot = startTime.add(i * 15, 'minute').format('YYYY-MM-DD HH:mm');
+                        occupied[timeSlot] = true;
+
+                        // Marcar el último slot del turno
+                        if (i === slotCount - 1) {
+                            lastSlots[timeSlot] = true;
                         }
                     }
                 });
+
                 setOccupiedTimes(occupied);
                 setLastTimeSlots(lastSlots);
             } catch (error) {
@@ -46,8 +51,8 @@ const Calendario = () => {
         };
 
         fetchTurnos();
-        disableButtonsDayTime(7, 1, 23); // Example
     }, []);
+
 
     const handlePrevNext = (type) => {
         setCurrentDate(currentDate.add(type === 'prev' ? -1 : 1, 'week'));
@@ -60,7 +65,7 @@ const Calendario = () => {
     const handleDayClick = (date) => {
         setSelectedDate(date);
         setSelectedTime(date.format('HH:mm'));
-        setSelectedDay(date.format('YYYY-MM-DD')); 
+        setSelectedDay(date.format('YYYY-MM-DD'));
         setOpenRequestTurn(true);
     };
 
@@ -70,7 +75,7 @@ const Calendario = () => {
 
         for (let i = 0; i < duration / 15; i++) {
             const timeSlot = startTime.add(i * 15, 'minute');
-            timesToBlock.push(timeSlot.format());
+            timesToBlock.push(timeSlot.format('YYYY-MM-DD HH:mm'));
         }
 
         setOccupiedTimes((prev) => {
@@ -175,7 +180,7 @@ const Calendario = () => {
                                 <div key={i} className="day-slot">
                                     {timeSlots.map((slot, j) => {
                                         const date = currentDate.startOf('week').add(i, 'day').set('hour', slot.hour()).set('minute', slot.minute());
-                                        const formattedDate = date.format();
+                                        const formattedDate = date.format('YYYY-MM-DD HH:mm');
                                         const isOccupied = occupiedTimes[formattedDate];
                                         const isSelected = selectedDate && selectedDate.isSame(date);
                                         const isDisabled = disabledDay && slot.hour() >= disabledDay.startHour && slot.hour() < disabledDay.endHour;
@@ -193,6 +198,7 @@ const Calendario = () => {
                                             </button>
                                         );
                                     })}
+
                                 </div>
                             );
                         })}
