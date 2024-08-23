@@ -10,7 +10,7 @@ import CalendarWeekly from './components/CalendarWeekly.jsx';
 import RequestTurn from './components/RequestTurn.jsx';
 import RegisterTurn from './components/RegisterTurn.jsx';
 import Prueba from './components/Prueba.jsx';
-import Calendario from './components/Calendar.jsx';
+import Calendari from './components/Calendar.jsx';
 import Diary from './components/Diary.jsx';
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Route path="/requestTurn" element={<RequestTurn />} />
         <Route path="/registerTurn" element={<RegisterTurn />} />
         <Route path="/prueba" element={<Prueba />} />
-        <Route path="/calendario" element={<Calendario />} />
+        <Route path="/calendar/:dniProfesional" element={<Calendari />} />
         <Route path="/diary" element={<Diary />} />
       </Routes>
     </Router>

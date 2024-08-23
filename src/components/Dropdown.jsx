@@ -8,18 +8,18 @@ const Dropdown = ({ title, items }) => {
 
   return (
     <li className='dropdown-list'>
-      <div className='dropdown-link' onClick={() => setSubMenuOpen(!subMenuOpen)}>
-        <FaRegCalendarAlt />{title}
-        <span className={`dropdown-arrow ${subMenuOpen ? 'open' : ''}`}>▼</span>
-      </div>
+          <div className='dropdown-link' onClick={() => setSubMenuOpen(!subMenuOpen)}>
+            <FaRegCalendarAlt />{title}
+            <span className={`dropdown-arrow ${subMenuOpen ? 'open' : ''}`}>▼</span>
+          </div>
       <ul className={`dropdown-sub ${subMenuOpen ? 'open' : ''}`}>
-        {items.map((item, index) => (
-          <li className='dropdown-li' key={index}>
-            <Link to={item.link} className='dropdown-anchor'>
-              {item.label}
-            </Link>
-          </li>
-        ))}
+            {items.map((item, index) => (
+                <li className='dropdown-li' key={index}>
+                    <Link to={item.link} className='dropdown-anchor'>
+                      {item.label}
+                    </Link>
+                </li>
+            ))}
       </ul>
     </li>
   );

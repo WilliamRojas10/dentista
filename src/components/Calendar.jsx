@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import '../styles/Calendar.css';
 import RequestTurn from './RequestTurn';
 import Navigation from './Navigation';
@@ -8,7 +9,7 @@ import 'dayjs/locale/es';
 
 dayjs.locale('es');
 
-const Calendario = () => {
+const Calendar = () => {
     const [openDiary, setOpenDiary] = useState(false);
     const [openRequestTurn, setOpenRequestTurn] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
@@ -18,11 +19,12 @@ const Calendario = () => {
     const [lastTimeSlots, setLastTimeSlots] = useState({});
     const [currentDate, setCurrentDate] = useState(dayjs());
     const [disabledDays, setDisabledDays] = useState({});
+    const { dniProfesional } = useParams();
 
     useEffect(() => {
         const fetchTurnos = async () => {
             try {
-                const response = await fetch('http://localhost:5292/api/Turnos/ListarTurnos/22223333');
+                const response = await fetch(`http://localhost:5292/api/Turnos/ListarTurnos/${dniProfesional}`);
                 const data = await response.json();
 
                 const occupied = {};
@@ -51,7 +53,7 @@ const Calendario = () => {
         };
 
         fetchTurnos();
-    }, []);
+    }, [dniProfesional]);
 
 
     const handlePrevNext = (type) => {
@@ -213,11 +215,13 @@ const Calendario = () => {
                     onConfirmTurn={confirmTurn}
                     onClose={() => {
                         setOpenRequestTurn(false);
+                    
                     }}
+                    dniProfesional={dniProfesional}
                 />
             )}
         </div>
     );
 };
 
-export default Calendario;
+export default Calendar;

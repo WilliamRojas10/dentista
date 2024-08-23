@@ -3,6 +3,8 @@ import '../styles/Diary.css';
 import { RxCross2 } from "react-icons/rx";
 
 const PendingShift = ({ datetime, especialidad, profesional }) => {
+//TODO: en datatime deberia devolver en el siguiente formato: Lunes 12 de enero de 2025 - funcion para convertir el paramentro datetime en el fortmato aclaerado
+    
     return (
         <div className='pending-shift'>
             <p className='date-text'>
@@ -20,15 +22,14 @@ function Diary({ onOpen, turnConfirmed }) /*AbrirVentana y actualizar la agenda*
     const [turns, setTurns] = useState([]);
 
     useEffect(() => {
-        // Fetch turnos from the API
         const fetchTurnos = async () => {
             try {
-                const response = await fetch('http://localhost:5292/api/Turnos/ListaTurnosPorIdPaciente/1');
+                const response = await fetch(`http://localhost:5292/api/Turnos/ListarTurnosPorIdPaciente/1`);
                 const data = await response.json();
                 
                 // Ordenar los turnos por fecha y hora de forma descendente
-                const sortedData = data.sort((a, b) => new Date(b.fechaTurno) - new Date(a.fechaTurno));
-                setTurns(sortedData);
+                const sortedTurns = data.sort((a, b) => new Date(b.fechaTurno) - new Date(a.fechaTurno));
+                setTurns(sortedTurns);
             } catch (error) {
                 console.error('Error fetching turnos:', error);
             }
@@ -47,6 +48,7 @@ function Diary({ onOpen, turnConfirmed }) /*AbrirVentana y actualizar la agenda*
             {turns.map(turno => (
                 <PendingShift
                     key={turno.id} // Asumiendo que cada turno tiene un id único
+                    
                     datetime={turno.fechaTurno}
                     especialidad={turno.tratamientoNombre}
                     profesional={`Dr. ${turno.profesionalNombre} ${turno.profesionalApellido}`}

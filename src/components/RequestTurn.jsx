@@ -12,9 +12,9 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/es'; // Para usar la localización en español
 import Warning from './Warning'; // Importar el componente de advertencia
 
-const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
+const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose, dniProfesional }) => {
     const [nombreProfesional, setNombreProfesional] = useState("");
-    const [dniProfesional, setDniProfesional] = useState("");
+    //const [dniProfesional, setDniProfesional] = useState("");
     const [precioTratamiento, setPrecioTratamiento] = useState(null);
     const [idTratamiento, setIdTratamiento] = useState(null);
     const [duration, setDuration] = useState("");
@@ -25,7 +25,7 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
 
     // Obtener tratamientos
     useEffect(() => {
-        axios.get(`http://localhost:5292/api/Tratamientos/ObtenerTratamientosPorProfesional/22223333`)
+        axios.get(`http://localhost:5292/api/Tratamientos/ObtenerTratamientosPorProfesional/${dniProfesional}`)
             .then(response => {
                 console.log('Tratamientos:', response.data); // Para depuración
                 setTratamientos(response.data);
@@ -50,7 +50,7 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose }) => {
             setPrecioTratamiento(tratamientoSeleccionado.tratamientoPrecio);
             setIdTratamiento(tratamientoSeleccionado.tratamientoId);
             setNombreProfesional(tratamientoSeleccionado.profesionalNombre + " " + tratamientoSeleccionado.profesionalApellido);
-            setDniProfesional(tratamientoSeleccionado.profesionalDni);
+            //setDniProfesional(tratamientoSeleccionado.profesionalDni);
             setCompletionTime(sumarMinutos(time, tratamientoSeleccionado.tratamientoDuracion));
             console.log('Tratamiento seleccionado:', tratamientoSeleccionado); // Para depuración
             console.log('Dia y hora: ', day, time); // Para depuración
