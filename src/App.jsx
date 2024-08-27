@@ -27,7 +27,7 @@ function App() {
         <Route path="/requestTurn" element={<RequestTurn />} />
         <Route path="/registerTurn" element={<RegisterTurn />} />
         <Route path="/prueba" element={<Prueba />} />
-        <Route path="/calendar/:dniProfesional" element={<Calendari />} />
+        <Route path="/calendar/:dniProfesional/:nombreApellidoProfesional" element={<Calendari />} />
         <Route path="/diary" element={<Diary />} />
         
       </Routes>

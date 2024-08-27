@@ -20,6 +20,7 @@ const Calendar = () => {
     const [currentDate, setCurrentDate] = useState(dayjs());
     const [disabledDays, setDisabledDays] = useState({});
     const { dniProfesional } = useParams();
+    const { nombreApellidoProfesional } = useParams();
 
     useEffect(() => {
         const fetchTurnos = async () => {
@@ -142,7 +143,7 @@ const Calendar = () => {
                         Agenda
                     </span>
                     <h3>
-                        ODONTOLOGIA
+                        {nombreApellidoProfesional}
                     </h3>
                     <span className="btn-today" onClick={handleToday}>
                         Hoy
@@ -173,13 +174,13 @@ const Calendar = () => {
                         ))}
                     </div>
 
-                    <div className="hours">
+                    {/* <div className="hours">
                         {timeSlots.map((slot, i) => (
                             <div key={i} className="hour">
                                 {slot.format('HH:mm')}
                             </div>
                         ))}
-                    </div>
+                    </div> */}
                     <div className="days-slots">
                         {Array.from({ length: 7 }, (_, i) => {
                             const dayOfWeek = dayjsToCustomDayNumber(currentDate.startOf('week').add(i, 'day').day());

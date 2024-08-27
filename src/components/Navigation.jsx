@@ -12,6 +12,7 @@ import Dropdown from './Dropdown';
 function Navigation() {
   const [open, setOpen] = useState(false);/*TODO Agregar useRef o el otro estado para que al hacer clic en cualquier otro lugar que no sea el menu se cierre*/
   const [profesionales, setProfesionales] = useState([]);
+  const [nombreApellidoProfesional, setNombreApellidoProfesional] = useState("");
   useEffect(() => {
     const fetchTurnos = async () => {
         try {
@@ -41,7 +42,7 @@ function Navigation() {
                         title="Turnero"
                         items={
                           profesionales.map((profesional) => {
-                              return { label: `${profesional.profesion} ${profesional.nombre} ${profesional.apellido}`, link: `/calendar/${profesional.dni}` };
+                              return { label: `${profesional.profesion} ${profesional.nombre} ${profesional.apellido}`, link: `/calendar/${profesional.dni}/${profesional.nombre} ${profesional.apellido}` };
                           })  
                         } 
                       
