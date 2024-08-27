@@ -50,6 +50,7 @@ function Navigation() {
                        
                   </li>
             <li><Link to="/">Sobre Nosotros</Link></li>
+            <li><Link to="/diary">Agenda</Link></li>
           </ul>
       </header>
     </div>

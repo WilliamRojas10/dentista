@@ -169,10 +169,23 @@ const Calendar = () => {
                     <div className="days">
                         {Array.from({ length: 7 }, (_, i) => (
                             <div key={i} className={`day-slot ${isToday(currentDate.startOf('week').add(i, 'day')) ? 'day-today' : ''}`}>
-                                {currentDate.startOf('week').add(i, 'day').format('ddd D').toUpperCase()}
+                                <span className="day-name">
+                                    {currentDate.startOf('week').add(i, 'day').format('ddd').toUpperCase()}
+                                </span>
+                                <span className="day-number">
+                                    {currentDate.startOf('week').add(i, 'day').format('D')}
+                                </span>
                             </div>
                         ))}
                     </div>
+
+                    {/* <div className="days">
+                        {Array.from({ length: 7 }, (_, i) => (
+                            <div key={i} className={`day-slot ${isToday(currentDate.startOf('week').add(i, 'day')) ? 'day-today' : ''}`}>
+                                {currentDate.startOf('week').add(i, 'day').format('ddd D').toUpperCase()}
+                            </div>
+                        ))}
+                    </div> */}
 
                     {/* <div className="hours">
                         {timeSlots.map((slot, i) => (
@@ -223,7 +236,7 @@ const Calendar = () => {
                     onConfirmTurn={confirmTurn}
                     onClose={() => {
                         setOpenRequestTurn(false);
-                    
+
                     }}
                     dniProfesional={dniProfesional}
                 />
