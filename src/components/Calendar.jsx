@@ -24,7 +24,14 @@ const Calendar = () => {
     useEffect(() => {
         const fetchTurnos = async () => {
             try {
-                const response = await fetch(`http://localhost:5292/api/Turnos/ListarTurnos/${dniProfesional}`);
+                const response = await fetch(`http://localhost:5292/api/Turnos/ListarTurnos/${dniProfesional}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
                 const data = await response.json();
 
                 const occupied = {};
@@ -53,7 +60,7 @@ const Calendar = () => {
         };
 
         fetchTurnos();
-    }, [dniProfesional]);
+    }, [dniProfesional, openDiary]);
 
 
     const handlePrevNext = (type) => {

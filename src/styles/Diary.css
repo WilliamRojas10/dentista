@@ -12,6 +12,10 @@
     /*TODO Fijarse si queda en 18x o 5pc*/
     margin: 0 1rem;
 }
+.pending-shift .date-text{
+    display: grid;
+    gap: 5px;
+}
 
 .pending-shift .date-text p span {
     font-weight: 600;

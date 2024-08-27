@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import '../styles/RequestTurn.css';
 import { RxCross2 } from "react-icons/rx";
@@ -13,6 +13,8 @@ import 'dayjs/locale/es'; // Para usar la localización en español
 import Warning from './Warning'; // Importar el componente de advertencia
 
 const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose, dniProfesional }) => {
+    const requestTurnRef = useRef(null);
+
     const [nombreProfesional, setNombreProfesional] = useState("");
     //const [dniProfesional, setDniProfesional] = useState("");
     const [precioTratamiento, setPrecioTratamiento] = useState(null);
@@ -74,7 +76,7 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose, dniProfesion
             console.error('Error al enviar datos:', error);
             if (error.response && error.response.status === 400) {
                 // Si el error es 400, significa que hubo un conflicto
-                setError('El profesional ya tiene un turno programado en este horario.');
+                setError('El profesional ya tiene un turno programado en este horario, elija otro horario o día.');
             } else {
                 setError('Ocurrió un error al registrar el turno.');
             }
@@ -96,8 +98,23 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose, dniProfesion
         return fechaFormateada;
     }
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (requestTurnRef.current && !requestTurnRef.current.contains(event.target)) {
+                onClose(); // Llama a la función de cierre si se hace clic fuera del componente
+            }
+        };
+    
+        document.addEventListener('mousedown', handleClickOutside);
+    
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [onClose]);
+
+    
     return (
-        <div className="request-turn">
+        <div className="request-turn" ref={requestTurnRef}>
             <button onClick={onClose} className="close"><RxCross2 /></button>
             {loading ? (
                 <p>Loading...</p>

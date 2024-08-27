@@ -12,6 +12,7 @@ import RegisterTurn from './components/RegisterTurn.jsx';
 import Prueba from './components/Prueba.jsx';
 import Calendari from './components/Calendar.jsx';
 import Diary from './components/Diary.jsx';
+
 function App() {
   return (
     <Router>
@@ -28,6 +29,7 @@ function App() {
         <Route path="/prueba" element={<Prueba />} />
         <Route path="/calendar/:dniProfesional" element={<Calendari />} />
         <Route path="/diary" element={<Diary />} />
+        
       </Routes>
     </Router>
   );
