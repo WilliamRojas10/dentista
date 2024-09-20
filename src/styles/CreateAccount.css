@@ -1,5 +1,5 @@
 .create-account {
-    height: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,11 +7,10 @@
 }
 
 .create-account form {
-    background-color: rgb(255, 255, 255);
+    background-color: var(--blanco);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.320);
     display: grid;
-    width: 80vw;
-    margin: 40px 0;
+    margin: 40px 20px;
     padding: 35px 20px;
     border-radius: 25px;
 
@@ -31,23 +30,28 @@
     border: solid 1px rgba(0, 0, 0, 0.300);
 }
 
-.container-2 {
+.create-account .form .container-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0 10px
 }
 
-.container-3 {
+.create-account .form .container-3 {
     display: grid;
     grid-template-columns: repeat(6, 32%);
     gap: 0 10px
 }
 
-.container-1 {
+.create-account .form .container-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0 10px
+}
+
+.create-account .form .container-1 {
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 
@@ -55,39 +59,67 @@
 
 .create-account form .btn {
     padding: 10px;
-    width: 40%;
+   
     justify-self: center;
     border-radius: 15px;
     border: solid 1px rgba(0, 0, 0, 0.225);
     background-color: #007BFF;
-    color: white;
+    color: var(--blanco);
     cursor: pointer;
 }
 
 
 /*------------------------RESPONSIVE----------------------*/
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 850px) {
+    .create-account {
+        height: 100%;
+    }
+    .create-account form {
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.320);
+        display: grid;
+        margin: 10px 5px;
+        padding: 15px 10px;    
+    }
 
-    .container-3 {
+    .create-account form h2 {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .create-account .form .container-3 {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(3, 1fr);
 
     }
 
-    .container-2 {
+    .create-account .form .container-2 {
         display: grid;
         grid-template-columns: 1fr;
     }
+
+    .create-account .form .container-1 {
+        display: grid;
+        grid-template-columns: 30% 1fr;
+
+    }    
+
+    .create-account .form .container-4{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .create-account .form .container-1 .codigoArea{
+        border-top-right-radius: 0;
+        padding: 9.5px;
+        border-bottom-right-radius: 0;
+    }
+    .create-account .form .container-1 .telefono{
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
 }
 
-.create-accountbutton {
-    padding: 10px;
-    width: 40%;
-    justify-self: center;
-    border-radius: 15px;
-    border: solid 1px rgba(0, 0, 0, 0.225);
-    background-color: #007BFF;
-    color: white;
-    cursor: pointer;
-}
+

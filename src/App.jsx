@@ -1,16 +1,16 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/Home.jsx';
-import Login from './components/Login.jsx';
-import RecoverAccount from './components/RecoverAccount.jsx';
-import CreateAccount from './components/CreateAccount.jsx';
+import Home from './pages/Home.jsx';
+import Login from './pages/Login.jsx';
+import RecoverAccount from './pages/RecoverAccount.jsx';
+import CreateAccount from './pages/CreateAccount.jsx';
 import RegisterProduct from './components/RegisterProduct.jsx';
 import CalendarMonthly from './components/CalendarMonthly.jsx';
 import CalendarWeekly from './components/CalendarWeekly.jsx';
 import RequestTurn from './components/RequestTurn.jsx';
 import RegisterTurn from './components/RegisterTurn.jsx';
 import Prueba from './components/Prueba.jsx';
-import Calendari from './components/Calendar.jsx';
+import Calendar from './pages/Calendar.jsx';
 import Diary from './components/Diary.jsx';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
         <Route path="/requestTurn" element={<RequestTurn />} />
         <Route path="/registerTurn" element={<RegisterTurn />} />
         <Route path="/prueba" element={<Prueba />} />
-        <Route path="/calendar/:dniProfesional/:nombreApellidoProfesional" element={<Calendari />} />
+        <Route path="/calendar/:dniProfesional/:nombreApellidoProfesional" element={<Calendar />} />
         <Route path="/diary" element={<Diary />} />
         
       </Routes>

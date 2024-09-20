@@ -42,7 +42,7 @@ function Navigation() {
                         title="Turnero"
                         items={
                           profesionales.map((profesional) => {
-                              return { label: `${profesional.profesion} ${profesional.nombre} ${profesional.apellido}`, link: `/calendar/${profesional.dni}/${profesional.nombre} ${profesional.apellido}` };
+                              return { label: `${profesional.profesion} ${profesional.nombre} ${profesional.apellido}`, link: `/calendar/${profesional.id}/${profesional.nombre} ${profesional.apellido}` };
                           })  
                         } 
                       

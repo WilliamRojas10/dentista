@@ -1,4 +1,4 @@
-import { Input } from "./Input.jsx"
+import { Input } from "../components/Input.jsx"
 import React, { useState } from "react"
 import "../styles/RecoverAccount.css"
 

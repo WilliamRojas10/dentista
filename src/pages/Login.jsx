@@ -1,43 +1,44 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import imgLogueo from "../Images/diente.jpg";
 import "../styles/Login.css";
-import { Input } from "./Input.jsx"
-import { Link, useNavigate} from "react-router-dom";
-function Loguin(props) {
+import { Input } from "../components/Input.jsx";
+import { Link, useNavigate } from "react-router-dom";
+
+function Loguin() {
   const [userDni, setUserDni] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const route = useNavigate();
+  const navigate = useNavigate();
 
-  const login = () => {
-    // Aquí puedes agregar la lógica de autenticación
-    // Por ejemplo, podrías hacer una solicitud AJAX a un servidor para verificar las credenciales.
+  const login = (event) => {
+    event.preventDefault();  // Evitar que el formulario se recargue
+    console.log("Usuario:", userDni);
+    console.log("Contraseña:", password);
 
-    // En este ejemplo, simplemente mostramos un mensaje en la consola.
-    console.log('Usuario:', userDni);
-    console.log('Contraseña:', password);
+    // Simulación de lógica de autenticación
+    const coinciden = userDni === "william" && password === "william";
 
-    // Simulando una lógica de autenticación
-    const coinciden = userDni === "12345678" && password === "rojas";
-
-    (coinciden) ? setError("") :
-      setError("Usuario o Contraseña incorrecta");
     if (coinciden) {
-      route("/calendario");
+      setError(""); // Limpiar error si las credenciales son correctas
+      navigate("/"); // Redirigir al inicio
+    } else {
+      setError("Usuario o Contraseña incorrecta"); // Mostrar mensaje de error
     }
-  }
+  };
 
   return (
     <div className="login">
       <div className="box">
-        <form className="login-form">
-          <h2>SD ODONTOLOGIA{props.tienda}</h2>
+        <form className="login-form" onSubmit={login}>
+          <Link className="title" to="/">SD ODONTOLOGIA</Link>
+
           <Input
             nombreGrupo="usuario"
             tipoInput="text"
             label="DNI:"
             value={userDni}
             onChange={(e) => setUserDni(e.target.value)}
+            require={true}
           />
 
           <Input
@@ -47,22 +48,16 @@ function Loguin(props) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             msjError={error}
+            require={true}
           />
 
-          
-          
-
-          <button onClick={login} className="signin">Iniciar Sesión</button>
-
+          <button type="submit" className="signin">Iniciar Sesión</button>
           <Link to="/createAccount" className="checkin"> Regístrate</Link>
-          
-            
           <Link to="/recoverAccount" className="recover"> ¿Has olvidado tu contraseña? </Link>
-         
         </form>
 
         <div className="container-img">
-          <img src={imgLogueo} alt="Icono de la app"  />
+          <img src={imgLogueo} alt="Icono de la app" />
         </div>
       </div>
     </div>

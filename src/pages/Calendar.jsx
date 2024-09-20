@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/Calendar.css';
-import RequestTurn from './RequestTurn';
-import Navigation from './Navigation';
-import Diary from './Diary';
+import RequestTurn from '../components/RequestTurn';
+import Navigation from '../components/Navigation';
+import Diary from '../components/Diary';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 

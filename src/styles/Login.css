@@ -31,7 +31,11 @@
     gap: 20px;
 
 }
-.login .box .login-form h2{
+.login .box .login-form .title{
+    text-decoration: none;
+    color: var(--negro);
+    font-size: 20px; /*TODO: tamaño de un titulo deberia estar asignado en una variable*/
+    font-weight: bold;
     justify-self: center;
      white-space: nowrap; /*para que el texto no ocupe mas de un renglon
      Lo otro es para hacer scroll 
@@ -40,11 +44,13 @@
 }
 .login .box .login-form .signin {
     background-color: #007BFF;
-    color: #fff;
+    color: var(--blanco);
     padding: 10px;
     cursor: pointer;
     border-radius: 10px;
+    font-size: 16px; /*TODO: tamaño de un boton deberia estar asignado en una variable*/
     text-align: center;
+    border : none;
 }
 
 .login .box .login-form .signin:hover {
@@ -58,7 +64,6 @@
 }
 
 .login .box .login-form .recover{
-    
     padding-bottom: 3% ;
     text-align: center;
 }
@@ -83,7 +88,6 @@
 }
 
 .oculto{
-
     color: #994ec8;
 }
 
