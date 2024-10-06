@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/Infographic.css'
+import '../styles/Components/Infographic.css'
 function Infographic({ name, urlImg, title, text }) {
     return (
         <div className='infographic'>

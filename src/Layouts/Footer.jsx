@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/Footer.css'
+import '../styles/Layouts/Footer.css'
 import img from '../Images/direccion.png'
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaFacebookSquare, FaInstagram, FaTelegramPlane } from "react-icons/fa";

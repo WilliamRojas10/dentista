@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Input, ListaPlegable} from './Input'
-import "../styles/RegisterProduct.css"
+import "../styles/Components/RegisterProduct.css"
 
 
 function RegisterProduct() {

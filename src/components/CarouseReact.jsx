@@ -2,8 +2,8 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import '../styles/CarouselReact.css';
 
+import '../styles/Components/CarouselReact.css';
 import img from '../Images/fondoPalmeras.jpg';
 import img2 from '../Images/interiorOficina.jpg';
 

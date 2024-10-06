@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaRegCalendarAlt } from 'react-icons/fa';
-import '../styles/Dropdown.css';
+import '../styles/Components/Dropdown.css';
 
-const Dropdown = ({ title, items }) => {
+export const Dropdown = ({ title, items }) => {
   const [subMenuOpen, setSubMenuOpen] = useState(false);
 
   return (
@@ -25,4 +25,4 @@ const Dropdown = ({ title, items }) => {
   );
 };
 
-export default Dropdown;
+

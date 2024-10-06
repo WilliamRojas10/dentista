@@ -5,8 +5,8 @@ import { RxCross2 } from 'react-icons/rx';
 import { PiToothLight } from "react-icons/pi";
 import { FaRegCalendarAlt, FaRegAddressCard, FaRegUser, FaRegCalendarCheck } from 'react-icons/fa';
 import img from '../Images/interiorOficina.jpg';
-import '../styles/Navigation.css';
-import Dropdown from './Dropdown';
+import '../styles/Layouts/Navigation.css';
+import { Dropdown } from '../components/Dropdown.jsx';
 
 
 function Navigation() {
@@ -35,7 +35,7 @@ function Navigation() {
           <button className={open ? 'cross-icon' : 'cross-icon-false'} onClick={() => setOpen(!open)}><RxCross2 /></button>
           <ul className={open ? 'menuOpen' : 'menuClose'}>
                   <li><Link to="/login"><FaRegUser /> Inicio de Sesion</Link></li>
-                  <li><Link to="/createAccount"><FaRegAddressCard /> Crear Cuenta</Link></li>
+                  {/* <li><Link to="/createAccount"><FaRegAddressCard /> Crear Cuenta</Link></li> */}
           
                   <li>
                       <Dropdown
@@ -49,8 +49,11 @@ function Navigation() {
                       />
                        
                   </li>
-            <li><Link to="/">Sobre Nosotros</Link></li>
-            <li><Link to="/diary">Agenda</Link></li>
+            {/* <li><Link to="/search">Buscar</Link></li> */}
+            <li><Link to="/manageProfessionals">Gestionar Profesionales</Link></li>
+            <li><Link to="/managePatients">Gestionar Pacientes</Link></li>
+            <li><Link to="/manageServices">Gestionar Servicios</Link></li>
+
           </ul>
       </header>
     </div>

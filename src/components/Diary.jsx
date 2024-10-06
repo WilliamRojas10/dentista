@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/Diary.css';
+import '../styles/Components/Diary.css';
 import { RxCross2 } from "react-icons/rx";
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';

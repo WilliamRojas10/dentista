@@ -1,10 +1,10 @@
 import React from 'react'
-import Navigation from '../components/Navigation'
+import Navigation from '../Layouts/Navigation'
+import Footer from '../Layouts/Footer'
 import CarouseReact from '../components/CarouseReact'
 import Infographic from '../components/Infographic'
-import Footer from '../components/Footer'
 import ShiftBar from '../components/ShiftBar'
-import '../styles/Home.css'
+import '../styles/Pages/Home.css'
 import img from '../Images/extraccionDental.png'
 import img2 from '../Images/terapia2.png'
 ////////////////////////////////////////////////////////////////////////////////////

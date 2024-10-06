@@ -1,0 +1,56 @@
+.container-warning {
+    position: fixed; /* Cambiar de absolute a fixed */
+    top: 0; 
+    left: 0;
+    height: 100vh; /* Cambia a 100vh para cubrir toda la altura de la ventana */
+    width: 100vw; /* Cambia a 100vw para cubrir toda la anchura de la ventana */
+    background-color: rgba(0, 0, 0, 0.22); /* Color con transparencia */
+    z-index: 999; /* Asegúrate de que esté encima de otros elementos */
+    display: flex; /* Para centrar el contenido */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.container-warning .modal-warning {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--blanco);
+    padding-bottom: 10px;
+    gap: 20px;
+    box-shadow:0px 5px 20px rgba(0, 0, 0, 0.354);
+    z-index: 1000;
+}
+
+
+.container-warning .modal-warning .title-warning {
+    text-align: center;
+    background-color: rgb(255, 117, 117);
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+.container-warning .modal-warning .text-warning {
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.container-warning .modal-warning .close {
+    padding: 0.4rem 0.5rem;
+    font-size: 1rem;
+    color: var(--rojo);
+    border: solid 2px var(--rojo);
+    background-color: var(--blanco);
+    border-radius: 10px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.container-warning .modal-warning .close:hover {
+    background-color: rgb(255, 117, 117);
+    color: var(--blanco);
+}

@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../Images/interiorOficina.jpg");
+    background-image: url("../../Images/interiorOficina.jpg");
 }
 
 .create-account form {

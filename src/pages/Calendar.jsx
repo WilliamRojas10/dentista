@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import '../styles/Calendar.css';
-import RequestTurn from '../components/RequestTurn';
-import Navigation from '../components/Navigation';
+import '../styles/Pages/Calendar.css';
+import ModalRequestTurn from '../components/ModalRequestTurn';
+import Navigation from '../Layouts/Navigation'
+
 import Diary from '../components/Diary';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
@@ -229,12 +230,12 @@ const Calendar = () => {
                 </div>
             </div>
             {openRequestTurn && (
-                <RequestTurn
+                <ModalRequestTurn
                     day={convertDateToDayNumber(selectedDay)}
                     time={selectedTime}
                     datetime={selectedDay}
                     onConfirmTurn={confirmTurn}
-                    onClose={() => {
+                    openModal={() => {
                         setOpenRequestTurn(false);
 
                     }}

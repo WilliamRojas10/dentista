@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import '../styles/RequestTurn.css';
+import '../styles/Components/RequestTurn.css';
 import { RxCross2 } from "react-icons/rx";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoPersonOutline } from "react-icons/io5";
@@ -10,9 +10,9 @@ import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoMdTime } from "react-icons/io";
 import dayjs from 'dayjs';
 import 'dayjs/locale/es'; // Para usar la localización en español
-import Warning from './Warning'; // Importar el componente de advertencia
+import ModalWarning from './ModalWarning'; // Importar el componente de advertencia
 
-const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose, dniProfesional }) => {
+const ModalRequestTurn = ({ day, time, datetime, onConfirmTurn, openModal, dniProfesional }) => {
     const requestTurnRef = useRef(null);
 
     const [nombreProfesional, setNombreProfesional] = useState("");
@@ -101,7 +101,7 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose, dniProfesion
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (requestTurnRef.current && !requestTurnRef.current.contains(event.target)) {
-                onClose(); // Llama a la función de cierre si se hace clic fuera del componente
+                openModal(); // Llama a la función de cierre si se hace clic fuera del componente
             }
         };
     
@@ -110,16 +110,16 @@ const RequestTurn = ({ day, time, datetime, onConfirmTurn, onClose, dniProfesion
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [onClose]);
+    }, [openModal]);
 
     
     return (
         <div className="request-turn" ref={requestTurnRef}>
-            <button onClick={onClose} className="close"><RxCross2 /></button>
+            <button onClick={openModal} className="close"><RxCross2 /></button>
             {loading ? (
                 <p>Loading...</p>
             ) : error ? (
-                <Warning textWarning={error} closeWarning={() => setError(null)} />
+                <ModalWarning textWarning={error} closeWarning={() => setError(null)} />
             ) : (
                 <ListaPlegable
                     placeholder={"Tratamientos"}
@@ -153,4 +153,4 @@ const ListaPlegable = ({ placeholder, opciones, handleSelectChange }) => {
     );
 };
 
-export default RequestTurn;
+export default ModalRequestTurn;

@@ -1,0 +1,73 @@
+/* General Styles for ul */
+.manage-services .manage-services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    list-style-type: none;
+}
+
+/* General Styles for the button-service */
+.button-service .service-link {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-decoration: none;
+    
+    width: 100%;
+    padding: 25px;
+    border: solid 2px var(--violeta);
+    color: var(--violeta);
+    background-color: var(--gris-claro);
+    border-radius: 15px;
+}
+.button-service .service-link:hover {
+    transition: all 0.3s ease-in-out;
+    background-color: var(--violeta);
+    color: var(--blanco);
+}
+
+/* Align name and icon horizontally */
+.button-service .service-link .name-container {
+    display: flex;
+    align-items: center;
+    
+}
+
+.button-service .name-service {
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem;
+}
+
+.button-service .container-image {
+    height: 35px;
+    width: 35px;
+    margin-left: 10px;
+}
+
+.button-service .container-image img {
+    height: 100%;
+    width: 100%;
+}
+
+/* Arrow icon at the far right */
+.button-service .arrow-icon {
+    margin-left: auto;
+}
+
+@media screen and (max-width: 580px) {
+    .button-service .service-link {
+        padding:  15px 10px;
+    }
+    .button-service .name-service {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+    }
+    .button-service .container-image {
+        height: 30px;
+        width: 30px;
+        margin-left: 10px;
+    }
+}

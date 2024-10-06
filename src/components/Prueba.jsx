@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 // import VentanaModal from './VentanaModal';
 // import BotonAbrirVentana from './BotonAbrirVentana';
-import "../styles/Prueba.css"
-import RequestTurn from './RequestTurn.jsx';
+import "../styles/Components/Prueba.css"
+import ModalRequestTurn from './ModalRequestTurn.jsx';
 
 // import React, { forwardRef } from 'react';
 // import './VentanaModal.css';
@@ -62,7 +62,7 @@ const Prueba = () => {
     <div>
       <h1>Componente Principal</h1>
       <BotonAbrirVentana toggleVentana={toggleVentana} />
-      {ventanaAbierta && <RequestTurn ref={ventanaRef} />}
+      {ventanaAbierta && <ModalRequestTurn ref={ventanaRef} />}
     </div>
   );
 };

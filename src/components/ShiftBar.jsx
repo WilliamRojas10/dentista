@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/ShiftBar.css'
+import '../styles/Components/ShiftBar.css'
 function ShiftBar({service}) {
   return (
     <div className='shift-bar'>

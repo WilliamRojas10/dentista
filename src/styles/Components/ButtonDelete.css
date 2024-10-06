@@ -1,0 +1,60 @@
+/*--- Botón de eliminar ---*/
+.deleteMovil {
+    display: none;
+}
+
+.delete {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    border: solid 2px var(--rojo);
+    border-radius: 10px;
+    margin: 0.7rem 0.7rem;
+    padding: 0.5rem 0.5rem;
+    font-weight: 600;
+    color: var(--rojo);
+    background-color: var(--blanco);
+}
+
+.delete:hover {
+    background-color: var(--rojo);
+    color: var(--blanco);
+    cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+    .delete {
+        font-size: 1rem;
+        margin: 0.2rem 0.3rem;
+        padding: 0.3rem 0.7rem;
+        font-weight: 600;
+    }
+}
+
+@media screen and (max-width: 565px) {
+    .delete {
+        display: none;
+    }
+
+    .deleteMovil {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        justify-self: center;
+        font-size: 10px;
+        border: solid 1px var(--rojo);
+        border-radius: 10px;
+        margin: 0;
+        padding: 0.2rem 0.4rem;
+        font-weight: 600;
+        color: var(--rojo);
+        background-color: var(--blanco);
+    }
+
+    .deleteMovil:hover {
+        background-color: var(--rojo);
+        color: var(--blanco);
+        cursor: pointer;
+    }
+}

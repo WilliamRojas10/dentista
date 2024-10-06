@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import imgLogueo from "../Images/diente.jpg";
-import "../styles/Login.css";
+import "../styles/Pages/Login.css";
 import { Input } from "../components/Input.jsx";
 import { Link, useNavigate } from "react-router-dom";
 

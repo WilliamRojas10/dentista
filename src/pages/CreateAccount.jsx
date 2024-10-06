@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../styles/CreateAccount.css"; // TODO CAMBIAR A FETCH
+import "../styles/Pages/CreateAccount.css"; // TODO CAMBIAR A FETCH
 import { Input } from "../components/Input.jsx";
 import Select from "../components/Select.jsx";
-import Warning from "../components/Warning.jsx";
+import ModalWarning from "../components/ModalWarning.jsx";
 
 function CreateAccount() {
   const navigate = useNavigate();

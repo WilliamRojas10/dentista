@@ -1,6 +1,6 @@
 import { Input } from "../components/Input.jsx"
 import React, { useState } from "react"
-import "../styles/RecoverAccount.css"
+import "../styles/Pages/RecoverAccount.css"
 
 function RecoverAccount() {
     const [telefono, settelefono] = useState("")
