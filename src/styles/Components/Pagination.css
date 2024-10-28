@@ -1,0 +1,101 @@
+.container-pagination {
+    position: fixed;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+
+    
+    align-items: center;
+    background-color: var(--blanco);
+    width: 100%;
+    padding: 10px 0;
+    gap: 5px;
+    box-shadow: 0px -5px 10px var(--gris-claro);
+    transition: translateY 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+}  
+
+/* .container-pagination.hidden {
+    transform: translateY(100%); 
+    opacity: 0;
+    transition: translateY 0.3s ease-in-out, opacity 0.3s ease-in-out; 
+
+}
+
+.container-pagination.visible {
+    transform: translateY(0); 
+    opacity: 1; 
+    transition: translateY 0.3s ease-in-out, opacity 0.3s ease-in-out; 
+
+}   */
+
+/* Resto de los estilos de botones */
+
+
+.container-pagination .button-previous,
+.container-pagination .button-next,
+.container-pagination .button-page {
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.2s ease-in;
+    font-weight: 700;
+    border: solid 2px var(--gris-claro);
+}
+
+.container-pagination .button-previous,
+.container-pagination .button-next {
+    background-color: var(--blanco);
+    color: var(--violeta-crepusculo);
+}
+
+.container-pagination .button-page {
+    background-color: var(--blanco);
+    /* border: 1px solid #ccc; */
+    color: #333;
+}
+
+
+.container-pagination .button-previous:hover,
+.container-pagination .button-next:hover {
+    background-color: var(--violeta-crepusculo);
+    color: var(--blanco);
+}
+
+.container-pagination .button-page:hover {
+    border-color: var(--violeta-crepusculo);
+}
+
+.container-pagination .button-previous:disabled,
+.container-pagination .button-next:disabled {
+    background-color: var(--gris-claro);
+    cursor: not-allowed;
+}
+
+.container-pagination .button-page.active {
+    background-color: var(--violeta-crepusculo);
+    color: var(--blanco);
+    border-color: var(--violeta-crepusculo);
+}
+
+.container-pagination .button-page.active:hover {
+    border-color: var(--violeta-crepusculo-oscuro);
+}
+
+
+/*TODO: a confirmar - en que posicion horizontalmente va a quedar? start o center*/
+@media screen and (max-width: 600px) {
+    .container-pagination {
+
+        justify-content: start;
+        padding: 10px 10%; 
+    }
+
+    .container-pagination .button-previous,
+    .container-pagination .button-next,
+    .container-pagination .button-page {
+        padding: 2px 10px;
+
+    }
+}

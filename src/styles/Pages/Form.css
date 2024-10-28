@@ -4,7 +4,7 @@ CRUProfessional
 */
 
 .edit {
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,6 +76,12 @@ CRUProfessional
     gap: 0 10px
 }
 
+.edit .form .container-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0 10px
+}
+
 .edit .form .container-1 {
     display: flex;
     align-items: center;
@@ -94,7 +100,46 @@ CRUProfessional
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+.edit .form .container-5 .container-days-week{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.edit .form .container-5 .container-days-week .button-day{
+    display: flex;
+    justify-content: center;
+    padding: 10px ;
 
+
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+    background-color: rgb(224, 224, 224);
+    cursor: pointer;
+    
+}
+.edit .form .container-5 .container-days-week .button-day:hover{
+    border: solid 1px var(--negro);
+
+}
+.edit .form .container-5 .container-days-week .button-day_active{
+    display: flex;
+    justify-content: center;
+    padding: 10px ;
+
+
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+    background-color: var(--azul);
+    color: var(--blanco);
+    cursor: pointer;
+}
+
+
+
+
+/*---Estandarizado---*/
 
 .container-btn {
     display: flex;
@@ -120,6 +165,8 @@ CRUProfessional
     color: var(--blanco);
 }
 
+
+
 /*------------------------RESPONSIVE----------------------*/
 
 @media screen and (max-width: 850px) {
@@ -128,7 +175,6 @@ CRUProfessional
     }
 
     .edit form {
-
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.320);
         display: grid;
         margin: 10px 5px 5px 5px;
@@ -140,11 +186,11 @@ CRUProfessional
         justify-content: center;
         margin-bottom: 2rem;
     }
-
-    .edit .form .container-3 {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, 1fr);
-
+       
+    .edit .form .container-1 {
+        display: grid;
+        grid-template-columns: 30% 1fr;
+        
     }
 
     .edit .form .container-2 {
@@ -152,13 +198,18 @@ CRUProfessional
         grid-template-columns: 1fr;
     }
 
-    .edit .form .container-1 {
-        display: grid;
-        grid-template-columns: 30% 1fr;
+    .edit .form .container-3 {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
 
     }
-
+    
     .edit .form .container-4 {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .edit .form .container-5 {
         display: grid;
         grid-template-columns: 1fr;
     }

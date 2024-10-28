@@ -79,6 +79,7 @@ function ManageBenefits() {
           column7="Telefono"
         />
         <RowInformation
+          link="/CRUBenefit"
           colum1="1"
           colum2="Consulta Odontologica"
           colum3="$20000"
@@ -91,8 +92,8 @@ function ManageBenefits() {
       
 
         <ButtonFloating 
-          textButton={"Agregar Profesional"}
-          link={"/createAccount"}
+          textButton={"Agregar Prestacion"}
+          link={"/CRUBenefit"}
         />
       </div>
     </div>

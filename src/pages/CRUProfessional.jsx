@@ -8,6 +8,7 @@ import ModalWarning from '../components/ModalWarning.jsx';
 import axios from 'axios';
 
 import { calculateAge } from "../Utils/calculateAge.js";
+//TODO: falta mejorar la estetica con dias laborales
 
 
 const paises = [
@@ -15,13 +16,25 @@ const paises = [
   "Uruguay", "Venezuela", "Paraguay", "España", "Estados Unidos", "Italia"
 ];
 const codigosArea = ["+54", "+1"];
-
+const diasLaborales = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado"];
 
 function CRUProfessional() {
   const [openModalConfirmation, setOpenModalConfirmation] = useState(false);
   const [openModalWarning, setOpenModalWarning] = useState(false);
   const [messageWarning, setMessageWarning] = useState("");
-  const { idPaciente } = useParams();
+  const [seeMore, setSeeMore] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
+  const [isEditableDays, setIsEditableDays] = useState({
+    lunes: false,
+    martes: false,
+    miercoles: false,
+    jueves: false,
+    viernes: false,
+    sabado: false,
+    domingo: false,
+  });
+
+  const { idProfesional } = useParams();
 
   const [codigoArea, setCodigoArea] = useState("");
   const [edad, setEdad] = useState("");
@@ -44,7 +57,6 @@ function CRUProfessional() {
     calle: "",
     numero: "",
   });
-  const [isEditable, setIsEditable] = useState(false);
 
 
   useEffect(() => {
@@ -56,7 +68,7 @@ function CRUProfessional() {
 
   const obtenerPaciente = async () => {
     try {
-      const response = await axios.get(`http://localhost:5292/api/Paciente/ObtenerPacientePorId/${idPaciente}`);
+      const response = await axios.get(`http://localhost:5292/api/Paciente/ObtenerPacientePorId/${idProfesional}`);
       const data = await response.json();
     } catch (error) {
       console.error('Error al obtener los pacientes del backend:', error);
@@ -123,6 +135,14 @@ function CRUProfessional() {
     setIsEditable(false);
     setOpenModalConfirmation(false);
   };
+
+  const handleDayClick = (day) => {
+    setIsEditableDays((prevState) => ({
+      ...prevState,
+      [day]: !prevState[day] // Cambia el estado de habilitado/deshabilitado
+    }));
+  };
+
 
   return (
     <div className="edit" id={isEditable ? "edit-active" : "show"}>
@@ -192,7 +212,7 @@ function CRUProfessional() {
             disabled={true}
           />
         </div>
-                
+
         <div className="container-4">
           <div className="container-1">
             <Select
@@ -244,50 +264,8 @@ function CRUProfessional() {
           />
         </div>
 
-        <h2>Datos profesionales</h2>
-
-        <div className="container-4">
-      
-        <Select
-          //TODO: A mejorar el funcionamiento del select para que pueda escribir
-            nombreGrupo="servicio"
-            label="Servicios:"
-            placeholder="Ver"
-            opciones={formData.servicios}
-            value={formData.servicios}
-            onChange={handleChange}
-            disabled={!isEditable}
-          />
-          <Input
-            nombreGrupo="matricula"
-            label="Matricula:"
-            tipoInput="text"
-            placeholder="1234"
-            value={formData.matricula}
-            onChange={handleChange}
-            disabled={!isEditable}
-          />
-          <Input
-            nombreGrupo="vencimientoMatricula"
-            label="Vencimiento de la matricula:"
-            tipoInput="date"
-            placeholder=""
-            value={formData.vecimientoMatricula}
-            onChange={handleChange}
-            disabled={!isEditable}
-          />
-          <Input
-            nombreGrupo="finContrato"
-            label="Fin del Contrato:"
-            tipoInput="date"
-            placeholder=""
-            value={formData.finContrato}
-            onChange={handleChange}
-            disabled={!isEditable}
-          />
-        </div>
-
         <h2>Datos de Domicilio</h2>
+
         <div className="container-4">
           <Input
             nombreGrupo="localidad"
@@ -327,12 +305,120 @@ function CRUProfessional() {
           />
         </div>
 
+        <h2>Datos profesionales</h2>
+
+        <div className="container-4">
+
+          <Select
+            //TODO: A mejorar el funcionamiento del select para que pueda escribir
+            nombreGrupo="servicio"
+            label="Servicios:"
+            placeholder="Ver"
+            opciones={formData.servicios}
+            value={formData.servicios}
+            onChange={handleChange}
+            disabled={!isEditable}
+          />
+          <Input
+            nombreGrupo="matricula"
+            label="Matricula:"
+            tipoInput="text"
+            placeholder="1234"
+            value={formData.matricula}
+            onChange={handleChange}
+            disabled={!isEditable}
+          />
+          <Input
+            nombreGrupo="vencimientoMatricula"
+            label="Vencimiento de la matricula:"
+            tipoInput="date"
+            placeholder=""
+            value={formData.vecimientoMatricula}
+            onChange={handleChange}
+            disabled={!isEditable}
+          />
+          <Input
+            nombreGrupo="finContrato"
+            label="Fin del Contrato:"
+            tipoInput="date"
+            placeholder=""
+            value={formData.finContrato}
+            onChange={handleChange}
+            disabled={!isEditable}
+          />
+        </div>
+
+        <h2 style={{ cursor: 'pointer' }} 
+            onClick={() => setSeeMore(!seeMore) }
+        > Dias laborales ▼ </h2>
+
+        {diasLaborales.map((dia, index) => (
+          <div key={index} className="container-5" style={seeMore ? { display: 'grid' } : { display: 'none' }}>
+            <div className='container-days-week'>
+              <button 
+                className={isEditableDays[dia] ? 'button-day_active' : 'button-day'} 
+                disabled={!isEditable}
+                onClick={() => handleDayClick(dia)}
+                type="button"
+              >
+                  {dia}
+              </button>
+            </div>
+
+
+            <Input
+              nombreGrupo={`horaInicio${dia}`}
+              label="Hora de inicio:"
+              tipoInput="time"
+              // value={formData.lunes}
+              //  onChange={handleChange}
+              require={!isEditableDays[dia] }
+              disabled={!isEditableDays[dia]}
+            />
+            <Input
+              nombreGrupo="horaFin"
+              label="Hora de Fin:"
+              tipoInput="time"
+              // value={formData.lunes}
+              //  onChange={handleChange}
+              require={!isEditableDays[dia]}
+              disabled={!isEditableDays[dia]}
+            />
+            <Input
+              nombreGrupo="espacioReceso"
+              label="Hora de inicio de receso:"
+              tipoInput="time"
+              // value={formData.lunes}
+              //  onChange={handleChange}
+              require={!isEditableDays[dia]}
+              disabled={!isEditableDays[dia]}
+            />
+            <Input
+              nombreGrupo="espacioReceso"
+              label="Hora de fin de receso:"
+              tipoInput="time"
+              // value={formData.lunes}
+              //  onChange={handleChange}
+              require={!isEditableDays[dia]}
+              disabled={!isEditableDays[dia]}
+            />
+          </div>
+
+        ))}
+
+
+
+
+
+
+
+
         <div className="container-btn">
           <button type="button" className="btn" onClick={() => setIsEditable(!isEditable)}>
             Editar
           </button>
           <button type="button" className="btn" disabled={!isEditable} onClick={() => { setOpenModalConfirmation(true); }}>
-            Guardar cambios
+            Guardar
           </button>
         </div>
       </form>

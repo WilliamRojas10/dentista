@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(122, 114, 190);
+    background-color: var(--violeta-crepusculo);
     color: #fff;
     padding: 30px 20px;
 

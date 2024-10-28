@@ -5,7 +5,7 @@
     height: 100vh; /* Cambia a 100vh para cubrir toda la altura de la ventana */
     width: 100vw; /* Cambia a 100vw para cubrir toda la anchura de la ventana */
     background-color: rgba(0, 0, 0, 0.22); /* Color con transparencia */
-    z-index: 999; /* Asegúrate de que esté encima de otros elementos */
+    z-index: 10; /* Asegúrate de que esté encima de otros elementos */
     display: flex; /* Para centrar el contenido */
     justify-content: center; /* Centrar horizontalmente */
     align-items: center; /* Centrar verticalmente */

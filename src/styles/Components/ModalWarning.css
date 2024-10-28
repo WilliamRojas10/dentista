@@ -29,7 +29,7 @@
 
 .container-warning .modal-warning .title-warning {
     text-align: center;
-    background-color: rgb(255, 117, 117);
+    background-color: var(--rojo);
     width: 100%;
     padding: 0.5rem 0;
 }
@@ -39,7 +39,7 @@
     padding: 0 1rem;
 }
 
-.container-warning .modal-warning .close {
+.container-warning .modal-warning .button-close {
     padding: 0.4rem 0.5rem;
     font-size: 1rem;
     color: var(--rojo);
@@ -50,7 +50,7 @@
     align-self: center;
 }
 
-.container-warning .modal-warning .close:hover {
-    background-color: rgb(255, 117, 117);
+.container-warning .modal-warning .button-close:hover {
+    background-color:var(--rojo);
     color: var(--blanco);
 }

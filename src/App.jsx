@@ -13,6 +13,8 @@ import ManageServices from './Pages/ManageServices.jsx';
 import ManageBenefits from './Pages/ManageBenefits.jsx'
 import CRUPatient from './Pages/CRUPatient.jsx';
 import CRUProfessional from './Pages/CRUProfessional.jsx';
+import CreateService from './Pages/CreateService.jsx';
+import CRUBenefit from './Pages/CRUBenefits.jsx';
 // import CalendarMonthly from './components/CalendarMonthly.jsx';
 // import CalendarWeekly from './components/CalendarWeekly.jsx';
 
@@ -47,6 +49,8 @@ function App() {
         <Route path="/manageBenefits" element={<ManageBenefits />} />
         <Route path="/CRUPatient" element={<CRUPatient />} />
         <Route path="/CRUProfessional" element={<CRUProfessional />} />
+        <Route path="/createService" element={<CreateService />} />
+        <Route path="/CRUBenefit" element={<CRUBenefit />} />
         <Route path="/search" element={<Search />} />
       </Routes>
     </Router>

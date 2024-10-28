@@ -1,265 +1,190 @@
-import React, { useState } from 'react'
-// import '../styles/Pages/ManageProfessionals.css'
-import Navigation from '../Layouts/Navigation.jsx';
+import React, { useState, useEffect } from 'react';
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { TiSortAlphabetically } from "react-icons/ti";
 import { IoCalendarNumberOutline } from "react-icons/io5";
 
-import { HeaderRow, RowInformation } from '../components/Grilla.jsx'
+import Navigation from '../Layouts/Navigation.jsx';
+import ModalWarning from '../components/ModalWarning.jsx';
+import { HeaderRow, RowInformation } from '../components/Grilla.jsx';
 import { ButtonFloating } from '../components/ButtonFloating.jsx';
 import { Search } from '../components/Search.jsx';
+import Pagination from '../components/Pagination.jsx';
+import { _listarPacientesPaginado, _buscarPaciente, _eliminarPaciente } from '../Services/Paciente.js';
+import '../styles/Pages/ManagePatients.css';
 
 function ManagePatients() {
     const [isAlphabeticalAscending, setIsAlphabeticalAscending] = useState(true);
     const [isDateAscending, setIsDateAscending] = useState(true);
+    const [openModalWarning, setOpenModalWarning] = useState(false);
+    const [tittleWarning, setTittleWarning] = useState('');
+    const [messageWarning, setMessageWarning] = useState('');
+    const [color, setColor] = useState('');
 
-    //TODO: Implementar la comunicacion con el back
+    // const [idPaciente, setIdPaciente] = useState(0);
+    const [pacientes, setPacientes] = useState([]);
+    const [pagina, setPagina] = useState(1);
+    const [tamanioPagina, setTamanioPagina] = useState(20);
+    const [totalPaginas, setTotalPaginas] = useState(0);
+    const [searchInput, setSearchInput] = useState('');
 
     const toggleAlphabeticalOrder = () => {
         setIsAlphabeticalAscending(!isAlphabeticalAscending);
+        isAlphabeticalAscending ?
+            listarPacientesPaginado(1, "Nombre", "asc") :
+            listarPacientesPaginado(1, "Nombre", "desc");
     };
 
     const toggleDateOrder = () => {
         setIsDateAscending(!isDateAscending);
+        isDateAscending ?
+            listarPacientesPaginado(1, "FechaRegistro", "asc") :
+            listarPacientesPaginado(1, "FechaRegistro", "desc");
     };
+
+    const listarPacientesPaginado = async (pagina, columna, orden) => {
+        try {
+            const data = await _listarPacientesPaginado(pagina, tamanioPagina, columna, orden);
+            setPacientes(data.pacientes);
+            setTotalPaginas(Math.ceil(data.totalRegistros / tamanioPagina));
+        } catch (error) {
+            setTittleWarning('Error')
+            setMessageWarning(error.message);
+            setColor('var(--rojo)');
+            setOpenModalWarning(true);
+        }
+    };
+
+    const buscarPaciente = async (filtro, pagina, tamanioPagina) => {
+        try {
+            const data = await _buscarPaciente(filtro, pagina, tamanioPagina);
+            setPacientes(data.pacientes);
+            setTotalPaginas(Math.ceil(data.totalRegistros / tamanioPagina));
+        } catch (error) {
+            setTittleWarning('Error')
+            setMessageWarning(error.message);
+            setColor('var(--rojo)');
+            setOpenModalWarning(true);
+        }
+    };
+
+    const eliminarPaciente = async (idPaciente) => {
+        // console.log("paciente a eliminar --->", idPaciente)
+        try {
+            const data = await _eliminarPaciente( idPaciente );
+            // console.log("respuesta eliminado --->", data.mensaje);
+            setTittleWarning('Aviso')
+            setMessageWarning(data.mensaje);
+            setColor('var(--azul-claro)');
+            setOpenModalWarning(true);
+        } catch (error) {
+            setTittleWarning('Error')
+            setMessageWarning(error.message);
+            setColor('var(--rojo)');
+            setOpenModalWarning(true);
+        }
+    };
+    useEffect(() => {
+        if (searchInput === '') {
+            listarPacientesPaginado(pagina, "FechaRegistro", "desc");
+          //  eliminarPaciente(12)
+        } else {
+            buscarPaciente(searchInput, pagina, tamanioPagina);
+        }
+    }, [pagina, searchInput, openModalWarning]);
+
     return (
         <div className='manage-professionals'>
             <Navigation />
+            {openModalWarning && (
+                <ModalWarning
+                    tittleWarning={tittleWarning}
+                    textWarning={messageWarning}
+                    openModal={() => {
+                        setOpenModalWarning(false);
+                    }}
+                    textButton={"Aceptar"}
+                    color= {color}
+                />
+            )}
             <div className="container-functions">
-                <Search />
-                <div className="container-buttons-sort">
-                    {isAlphabeticalAscending ?
-                        (
-                            <button className="button-simple sort-alphabetically-down"
-                                onClick={toggleAlphabeticalOrder}
-                                title='Ordenar alfabéticamente descendente'>
-                                <TiSortAlphabetically style={{ fontSize: '25px' }} />
-                                <FaArrowDown style={{ fontSize: '15px' }} />
-                            </button>
-                        )
-                        :
-                        (
-                            <button className="button-simple sort-alphabetically-up"
-                                onClick={toggleAlphabeticalOrder}
-                                title='Ordenar alfabéticamente ascendente'>
-                                <TiSortAlphabetically style={{ fontSize: '25px' }} />
-                                <FaArrowUp style={{ fontSize: '15px' }} />
-                            </button>
-                        )}
+                <Search
+                    onSearch={(input) => {
+                        setSearchInput(input);
+                        setPagina(1); // Restablecer a la primera página en cada búsqueda
+                    }}
+                    onClear={() => {
+                        setSearchInput(''); 
+                        setPagina(1); 
+                        listarPacientesPaginado(1, "FechaRegistro", "desc"); 
+                    }}
+                />
 
-                    {isDateAscending ?
-                        (
-                            <button className="button-simple sort-by-date-up"
-                                onClick={toggleDateOrder}
-                                title='Ordenar por fecha ascendente'>
-                                <IoCalendarNumberOutline style={{ fontSize: '25px' }} />
-                                <FaArrowUp style={{ fontSize: '15px' }} />
-                            </button>
-                        )
-                        :
-                        (
-                            <button className="button-simple sort-by-date-down"
-                                onClick={toggleDateOrder}
-                                title='Ordenar por fecha descendente'>
-                                <IoCalendarNumberOutline style={{ fontSize: '25px' }} />
-                                <FaArrowDown style={{ fontSize: '15px' }} />
-                            </button>
-                        )}
+                <div className="container-buttons-sort">
+                    {isAlphabeticalAscending ? 
+                     (
+                        <button className="button-simple sort-alphabetically-up" onClick={toggleAlphabeticalOrder} title='Ordenar alfabéticamente ascendente'>
+                            <TiSortAlphabetically style={{ fontSize: '25px' }} />
+                            <FaArrowUp style={{ fontSize: '15px' }} />
+                        </button>
+                    ) : (
+                        <button className="button-simple sort-alphabetically-down" onClick={toggleAlphabeticalOrder} title='Ordenar alfabéticamente descendente'>
+                            <TiSortAlphabetically style={{ fontSize: '25px' }} />
+                            <FaArrowDown style={{ fontSize: '15px' }} />
+                        </button>
+                    )}
+                    
+                    {isDateAscending ? (
+                        <button className="button-simple sort-by-date-up" onClick={toggleDateOrder} title='Ordenar por fecha ascendente'>
+                            <IoCalendarNumberOutline style={{ fontSize: '25px' }} />
+                            <FaArrowUp style={{ fontSize: '15px' }} />
+                        </button>
+                    ) : (
+                        <button className="button-simple sort-by-date-down" onClick={toggleDateOrder} title='Ordenar por fecha descendente'>
+                            <IoCalendarNumberOutline style={{ fontSize: '25px' }} />
+                            <FaArrowDown style={{ fontSize: '15px' }} />
+                        </button>
+                    )}
                 </div>
             </div>
 
             <div className="container-rows">
                 <HeaderRow
                     column1="Nº"
-                    column2="Nombres"
-                    column3="Apellidos"
-                    column4="Edad"
-                    column5="DNI"
+                    column2="Nombre"
+                    column3="Apellido"
+                    column4="DNI"
+                    column5="Teléfono"
                     column6="Email"
-                    column7="Fecha de registro"
+                    column7="Fecha de nacimiento"
                 />
-                <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="2"
-                    colum2="William Guillermo"
-                    colum3="Rojas Buendia"
-                    colum4="Programador"
-                    colum5="1231"
-                    colum6="william.guillermo.rojas@gmail.com"
-                    colum7="3517477399"
-                />
-                <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="1"
-                    colum2="tatiana silvana"
-                    colum3="diaz"
-                    colum4="odontologia"
-                    colum5="Matricula"
-                    colum6="tatianasilvana@gmail.com"
-                    colum7="3517479885"
-                />
-                <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="2"
-                    colum2="Anahi"
-                    colum3="Pedrasanni"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="tatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />
-                <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />  <RowInformation
-                    link={"/CRUProfessional"}
-                    colum1="3"
-                    colum2="Naiara Celeste"
-                    colum3="Chioccatto Fernandez"
-                    colum4="Ortodoncista"
-                    colum5="Matricula 123"
-                    colum6="naiaratatianasilvananahi@gmail.com"
-                    colum7="351747988"
-                />
+                {pacientes.map((paciente, index) => (
+                    <RowInformation
+                        key={paciente.idPaciente}
+                        link={`/CRUPatient/${paciente.idPaciente}`}
+                        colum1={index + 1 + (pagina - 1) * tamanioPagina}
+                        colum2={paciente.nombre}
+                        colum3={paciente.apellido}
+                        colum4={paciente.dniPaciente}
+                        colum5={paciente.telefono}
+                        colum6={paciente.email}
+                        colum7={paciente.fechaNacimiento}
+                        onClickDelete ={() =>  eliminarPaciente( paciente.idPaciente )}
+                    />
+                ))}
             </div>
+
+            <Pagination
+                paginaActual={pagina}
+                totalPaginas={totalPaginas}
+                onPageChange={setPagina}
+            />
+
             <ButtonFloating
                 textButton={"Agregar Paciente"}
-                link={"/CRUPatient"} //TODO: aca deberia ir el useParams vacios para indicar que se va a crear un paciente y no ver y editar
+                link={"/CRUPatient"}
             />
         </div>
-    )
+    );
 }
 
-export default ManagePatients
+export default ManagePatients;

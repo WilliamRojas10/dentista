@@ -7,13 +7,18 @@
   --gris-claro:rgb(235, 235, 235);
   --negro:#000;
   --violeta: #9b59b6;
+  --violeta-oscuro: #613872;
+  --violeta-crepusculo:rgb(122, 114, 190);
+  --violeta-crepusculo-oscuro:rgb(94, 89, 145);
   --rojo:#ff3b3b;
   --rosa:rgb(243, 230, 255);
   --amarillo:rgb(255, 217, 0);
   --salmon:#FFCCCC;
 
   /*--- Sombra estandar ---*/
-  box-shadow:0px 5px 10px var(--gris-claro);
+  box-shadow:0px 5px 10px var(--gris-claro);/*hacia abajo*/
+  box-shadow:0px -5px 10px var(--gris-claro); /*sombra hacia arriba*/
+
 }
 
 *{
