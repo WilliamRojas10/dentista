@@ -53,11 +53,26 @@
 }
 
 @media screen and (max-width: 565px) {
-    .floating-button-movil {
+    /* .floating-button-movil {
         display: block;
         position: fixed;
         bottom: 20px;
         right: 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 15px;
+        /* margin: 10px 0.7rem; 
+        padding: 10px 15px;
+        font-weight: 800;
+        background-color: var(--azul);
+        color: var(--blanco);
+        animation: myAnimation 2s ease-in-out;
+    } */
+    .floating-button-movil {
+        display: block;
+        position: fixed;
+        bottom: 4px;
+        right: 4px;
         font-size: 1rem;
         border: none;
         border-radius: 15px;

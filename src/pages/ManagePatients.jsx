@@ -18,7 +18,7 @@ function ManagePatients() {
     const [openModalWarning, setOpenModalWarning] = useState(false);
     const [tittleWarning, setTittleWarning] = useState('');
     const [messageWarning, setMessageWarning] = useState('');
-    const [color, setColor] = useState('');
+    const [colorWarning, setColorWarning] = useState('');
 
     // const [idPaciente, setIdPaciente] = useState(0);
     const [pacientes, setPacientes] = useState([]);
@@ -47,9 +47,10 @@ function ManagePatients() {
             setPacientes(data.pacientes);
             setTotalPaginas(Math.ceil(data.totalRegistros / tamanioPagina));
         } catch (error) {
-            setTittleWarning('Error')
-            setMessageWarning(error.message);
-            setColor('var(--rojo)');
+            const errorMessage = error.response?.data?.mensaje || error.message;
+            setTittleWarning('Error');
+            setMessageWarning(errorMessage);
+            setColorWarning('var(--rojo)');
             setOpenModalWarning(true);
         }
     };
@@ -60,33 +61,30 @@ function ManagePatients() {
             setPacientes(data.pacientes);
             setTotalPaginas(Math.ceil(data.totalRegistros / tamanioPagina));
         } catch (error) {
-            setTittleWarning('Error')
-            setMessageWarning(error.message);
-            setColor('var(--rojo)');
-            setOpenModalWarning(true);
+            console.error("Error al buscar paciente: " + error.response?.data?.mensaje || error.message)
+            setPacientes([]);
         }
     };
 
     const eliminarPaciente = async (idPaciente) => {
-        // console.log("paciente a eliminar --->", idPaciente)
         try {
             const data = await _eliminarPaciente( idPaciente );
-            // console.log("respuesta eliminado --->", data.mensaje);
             setTittleWarning('Aviso')
             setMessageWarning(data.mensaje);
-            setColor('var(--azul-claro)');
+            setColorWarning('var(--verde)');
             setOpenModalWarning(true);
         } catch (error) {
-            setTittleWarning('Error')
-            setMessageWarning(error.message);
-            setColor('var(--rojo)');
+            const errorMessage = error.response?.data?.mensaje || error.message;
+            setTittleWarning('Error');
+            setMessageWarning(errorMessage);
+            setColorWarning('var(--rojo)');
             setOpenModalWarning(true);
         }
     };
+    
     useEffect(() => {
         if (searchInput === '') {
             listarPacientesPaginado(pagina, "FechaRegistro", "desc");
-          //  eliminarPaciente(12)
         } else {
             buscarPaciente(searchInput, pagina, tamanioPagina);
         }
@@ -103,7 +101,7 @@ function ManagePatients() {
                         setOpenModalWarning(false);
                     }}
                     textButton={"Aceptar"}
-                    color= {color}
+                    color= {colorWarning}
                 />
             )}
             <div className="container-functions">
@@ -157,7 +155,11 @@ function ManagePatients() {
                     column6="Email"
                     column7="Fecha de nacimiento"
                 />
-                {pacientes.map((paciente, index) => (
+
+                {pacientes.length === 0 ?
+                <p style={{textAlign: 'center', marginTop: '20px'}}>No se encontraron resultados</p>
+                : 
+                pacientes.map((paciente, index) => (
                     <RowInformation
                         key={paciente.idPaciente}
                         link={`/CRUPatient/${paciente.idPaciente}`}
@@ -170,7 +172,7 @@ function ManagePatients() {
                         colum7={paciente.fechaNacimiento}
                         onClickDelete ={() =>  eliminarPaciente( paciente.idPaciente )}
                     />
-                ))}
+                ))} 
             </div>
 
             <Pagination
@@ -181,7 +183,7 @@ function ManagePatients() {
 
             <ButtonFloating
                 textButton={"Agregar Paciente"}
-                link={"/CRUPatient"}
+                link={"/CRUPatient/0"}
             />
         </div>
     );

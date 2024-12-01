@@ -1,5 +1,6 @@
 .container-pagination {
-    position: fixed;
+    /*position: fixed; A definir cual de los position es mejor, el problema esta cuando la grilla no se completa con registro y queda a mitad de pantalla*/
+    position: relative;
     bottom: 0;
 
     display: flex;
@@ -31,9 +32,29 @@
 }   */
 
 /* Resto de los estilos de botones */
-
-
 .container-pagination .button-previous,
+.container-pagination .button-next,
+.container-pagination .button-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.2s ease-in;
+    font-weight: 700;
+    
+    border: solid 2px var(--gris-claro);
+}
+
+.container-pagination .button-previous>*,
+.container-pagination .button-next>*,
+.container-pagination .button-page>*
+{
+    font-size: 20px;
+}
+
+/* .container-pagination .button-previous,
 .container-pagination .button-next,
 .container-pagination .button-page {
     padding: 8px 20px;
@@ -42,7 +63,7 @@
     transition: all 0.2s ease-in;
     font-weight: 700;
     border: solid 2px var(--gris-claro);
-}
+} */
 
 .container-pagination .button-previous,
 .container-pagination .button-next {
@@ -88,8 +109,8 @@
 @media screen and (max-width: 600px) {
     .container-pagination {
 
-        justify-content: start;
-        padding: 10px 10%; 
+        justify-content: center;
+        padding: 10px 0; 
     }
 
     .container-pagination .button-previous,

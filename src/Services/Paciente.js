@@ -38,13 +38,21 @@ export const _buscarPaciente = async (filtro, pagina, tamanioPagina) => {
     throw error;
   }
 };
-//http://localhost:5292/api/Paciente/eliminar?idPaciente=2
 
-export const _eliminarPaciente = async (idPaciente) => {
+
+export const _obtenerPacientePorId = async (idPaciente) => {
   try {
-    const response = await axios.put(`${API_URL}/eliminar/${idPaciente}`,{
-      params: { idPaciente }
-    });
+    const response = await axios.get(`${API_URL}/${idPaciente}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar paciente:", error);
+    throw error;
+  }
+};
+
+export const _obtenerPacientePorDni = async (dniPaciente) => {
+  try {
+    const response = await axios.get(`${API_URL}/obtener-paciente/${dniPaciente}`);
     return response.data;
   } catch (error) {
     console.error("Error al eliminar paciente:", error);
@@ -53,20 +61,27 @@ export const _eliminarPaciente = async (idPaciente) => {
 };
 
 
-export const _crearPaciente = async (pacienteData) => {
+export const _crearPaciente = async (pacienteDTO) => {
   try {
-    const response = await axios.post(`${API_URL}/`, pacienteData);
+    console.log("Datos del paciente:", pacienteDTO); // Para depuración
+    const response = await axios.post(`${API_URL}`, pacienteDTO, {
+      headers: {
+        'Content-Type': 'application/json', // Asegúrate de que sea el tipo correcto
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error al crear paciente:", error);
+    console.error("Error al crear paciente:", error.response ? error.response.data : error.message);
     throw error;
   }
 };
 
 
-export const _actualizarPaciente = async (id, pacienteData) => {
+
+export const _actualizarPaciente = async (idPaciente, pacienteDTO) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, pacienteData);
+    const response = await axios.put(`${API_URL}/${idPaciente}`, pacienteDTO);
+    console.log("Paciente actualizado EN SERVICE:", response);
     return response.data;
   } catch (error) {
     console.error("Error al actualizar paciente:", error);
@@ -75,9 +90,11 @@ export const _actualizarPaciente = async (id, pacienteData) => {
 };
 
 
-export const _obtenerPacientePorId = async (id) => {
+export const _eliminarPaciente = async (idPaciente) => {
   try {
-    const response = await axios.get(`${API_URL}/${id}`);
+    const response = await axios.put(`${API_URL}/eliminar/${idPaciente}`,{
+      params: { idPaciente }
+    });
     return response.data;
   } catch (error) {
     console.error("Error al eliminar paciente:", error);

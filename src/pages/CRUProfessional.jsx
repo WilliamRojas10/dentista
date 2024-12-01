@@ -8,6 +8,9 @@ import ModalWarning from '../components/ModalWarning.jsx';
 import axios from 'axios';
 
 import { calculateAge } from "../Utils/calculateAge.js";
+import { _crearProfesional, _obtenerProfesionalPorId, _actualizarProfesional } from '../Services/Profesional.js';
+import { da } from 'date-fns/locale';
+
 //TODO: falta mejorar la estetica con dias laborales
 
 
@@ -34,108 +37,162 @@ function CRUProfessional() {
     domingo: false,
   });
 
-  const { idProfesional } = useParams();
+  const { idProfessional } = useParams();
 
   const [codigoArea, setCodigoArea] = useState("");
   const [edad, setEdad] = useState("");
   const [formData, setFormData] = useState({
+    dniProfesional: "",
     nombre: "william",
     apellido: "rojas",
-    fechaNacimiento: "2000-03-24", //En este formato tiene que venir del back
-    //edad: "",
-    servicios: ["Odontologo", "Nutricionista"],
-    matricula: "",
-    vecimientoMatricula: "",
-    finContrato: "",
-    //codigoArea: "+549",
-    telefono: "+54 3517477399",
-    nacionalidad: "",
-    dni: "",
     email: "",
+    telefono: "",
+    nacionalidad: "",
+    fechaNacimiento: "",
+    //fechaRegistro: "",
+    matricula: "",
+    fechaVecimientoMatricula: "",
+    fechaFinContrato: "",
+   // idServicio: "",
+
     localidad: "",
     barrio: "",
     calle: "",
     numero: "",
   });
 
+//-----------------------------
 
-  useEffect(() => {
-    obtenerPaciente();
-    setEdad(calculateAge(formData.fechaNacimiento));
-  }, []);
+const crearProfesional = async (profesionalData) => {
+  try {
+    const data = await _crearProfesional(profesionalData);
+    setTittleWarning('Aviso');
+    setMessageWarning(data.mensaje);
+    setPatientCreated(data.suceso);
+    setColorWarning('var(--verde)');
+    setOpenModalWarning(true);
+  } catch (error) {
+    //console.error(error);
+    const errorMessage = error.response?.data?.mensaje || error.message;
+    setTittleWarning('Error');
+    setMessageWarning(errorMessage);
+    setColorWarning('var(--rojo)');
+    setOpenModalWarning(true);
+  }
+};
 
+const obtenerProfesionalPorId = async (idProfesional) => {
+  try {
+    const data = await _obtenerProfesionalPorId(idProfesional);
+    setFormData({
+      dniProfesional: data.dniProfesional || "",
+      nombre: data.nombre || "",
+      apellido: data.apellido || "",
+      email: data.email || "",
+      telefono: data.telefono || "",
+      nacionalidad: data.nacionalidad || "",
+      fechaNacimiento: data.fechaNacimiento || "",
 
-
-  const obtenerPaciente = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5292/api/Paciente/ObtenerPacientePorId/${idProfesional}`);
-      const data = await response.json();
-    } catch (error) {
-      console.error('Error al obtener los pacientes del backend:', error);
-      setOpenModalWarning(true);
-      setMessageWarning(error.message);
-    }
-  };
-
-  const guardarCambios = async () => {
-    const datos = {
-      ...formData
-    };
-
-    try {
-      const response = await axios.post('http://localhost:5292/api/Paciente/Guardar', datos);
-
-    } catch (error) {
-      console.error('Error al guardar los cambios:', error);
-      setOpenModalWarning(true);
-      setMessageWarning(error.message);
-    }
-  };
-
-
-  const handleFormat = () => {
-    const resetData = { ...formData };
-    Object.keys(resetData).forEach((key) => {
-      resetData[key] = "";
+      matricula: data.matricula || "",
+      fechaVecimientoMatricula: data.fechaVecimientoMatricula || "",
+      fechaFinContrato: data.fechaFinContrato || "",
+     // idServicio: "",
+      
+      localidad: data.localidad || "",
+      barrio: data.barrio || "",
+      calle: data.calle || "",
+      numero: data.numero || "",
     });
-    setFormData(resetData);
-  };
+  } 
+  catch (error) {
+    const errorMessage = error.response?.data?.mensaje || error.message;
+    setTittleWarning('Error');
+    setMessageWarning(errorMessage);
+    setColorWarning('var(--rojo)');
+    setOpenModalWarning(true);
+  }
+};
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'fechaNacimiento') {
-      const age = calculateAge(value);
-      setEdad(age);
-    }
-    if (name === 'codigoArea') {
-      setCodigoArea(value);
-    }
-    else if (name === 'telefono') {
-      setFormData({ ...formData, [name]: value });
-    }
-    else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
+const actualizarProfesional = async (profesionalDTO) => {
+  let idProfesional = idProfessional;
+  try {
+    const data = await _actualizarProfesional(idProfesional, profesionalDTO);
+    setTittleWarning('Aviso');
+    setMessageWarning(data.mensaje);
+    setColorWarning('var(--verde)');
+    setOpenModalWarning(true);
+  } catch (error) {
+    const errorMessage = error.response?.data?.mensaje || error.message;      
+    setTittleWarning('Error');
+    setMessageWarning(errorMessage);
+    setColorWarning('var(--rojo)');
+    setOpenModalWarning(true);
+  }
+};
 
-  const imprimirPorConsola = () => {
 
-    const updatedFormData = { ...formData };
+const formatStates = () => { // limpia los estados
+  const resetData = { ...formData };
+  Object.keys(resetData).forEach((key) => {
+    resetData[key] = "";
+  });
+  setFormData(resetData);
+};
 
-    if (codigoArea && formData.telefono) {
-      updatedFormData.telefono = `${codigoArea} ${formData.telefono}`;
-    }
+const handleChange = (e) => { // actualiza los estados en base a lo que se escribe en el input
+  const { name, value } = e.target;
+  // if (name === 'fechaNacimiento') {
+  //   const age = calculateAge(value);//TODO:
+  //   setEdad(age);
+  // }
+  if (name === 'codigoArea') {
+    setCodigoArea(value);
+  }
+  else if (name === 'telefono') {
+    setFormData({ ...formData, [name]: value });
+  }
+  else {
+    setFormData({ ...formData, [name]: value });
+  }
+};
 
-    Object.keys(updatedFormData).forEach((key) => {
-      console.log(key, ": ", updatedFormData[key]);
-    });
+const confirmSaved = async () => {
+  // try {
 
-    setFormData(updatedFormData);
+  if (idProfessional === '0') {
+    await crearProfesional(formData);
+  } else {
+    await actualizarProfesional(formData);
+  }
+  setOpenModalConfirmation(false);
+  // console.log("XQ CARAJO NO SE CIERRA EL MODAL DE CONFIRMATION");
+  // } catch (error) {
+  //   setMessageWarning(error.response ? error.response.data : "Error desconocido");
+  //   setOpenModalWarning(true);
+  // }
+};
 
-    setIsEditable(false);
-    setOpenModalConfirmation(false);
-  };
 
+useEffect(() => {
+  if (idProfessional == '0') {
+    console.log("nuevo profesional y formateado y formateado el formData");
+    formatStates();
+    setIsEditable(true);
+  }
+  else {
+    obtenerProfesionalPorId(idProfessional);
+
+  }
+}, [idProfessional]);
+
+useEffect(() => {//Calcular la edad
+  if (formData.fechaNacimiento) {
+    const age = calculateAge(formData.fechaNacimiento);
+    setEdad(age);
+  }
+}, [formData.fechaNacimiento]);
+
+//-----------------------------
   const handleDayClick = (day) => {
     setIsEditableDays((prevState) => ({
       ...prevState,
@@ -146,33 +203,38 @@ function CRUProfessional() {
 
   return (
     <div className="edit" id={isEditable ? "edit-active" : "show"}>
-      {openModalConfirmation && (
+        {openModalConfirmation &&
         <ModalConfirmation
           tittleConfirmation={"Advertencia"}
-          textConfirmation={"¿Está seguro que sea guardar los cambios de edición del paciente?"}
+          textConfirmation={idProfessional === '0' ? "¿Está seguro que desea guardar el profesional?" 
+            : "¿Está seguro que desea guardar los cambios realizados?"}
           openModal={() => {
             setOpenModalConfirmation(false);
           }}
           confirmAction={() => {
-            imprimirPorConsola();//llama al back para guardar los cambios
-            guardarCambios()
+            confirmSaved()
+          }}
+          cancelAction={() => {
+            setOpenModalConfirmation(false);
           }}
           textButtonClose={"Cancelar"}
-          textButtonConfirmation={"Aceptar"}
+          textButtonConfirmation={"Guardar"}
         />
-      )}
+      }
 
       {openModalWarning && (
         <ModalWarning
-          tittleWarning={"Error"}
+          tittleWarning={tittleWarning}
           textWarning={messageWarning}
           openModal={() => {
             setOpenModalWarning(false);
+            if (patientCrated){
+              navigate("/manageProfessionals");}
           }}
           textButton={"Aceptar"}
+          color={colorWarning}
         />
       )}
-
       <form className="form">
         <h2>Datos del Profesional</h2>
         <div className="container-4 ">
@@ -244,7 +306,7 @@ function CRUProfessional() {
             disabled={!isEditable}
           />
           <Input
-            nombreGrupo="dni"  // Cambiado de 'documento' a 'dni' para que se pueda agregar valores en el input
+            nombreGrupo="dniProfesional"  // Cambiado de 'documento' a 'dni' para que se pueda agregar valores en el input
             label="Nº de documento:"
             tipoInput="text"
             placeholder="DNI: 12.345.987"
@@ -307,9 +369,9 @@ function CRUProfessional() {
 
         <h2>Datos profesionales</h2>
 
-        <div className="container-4">
+        <div className="container-4" >
 
-          <Select
+          {/* <Select
             //TODO: A mejorar el funcionamiento del select para que pueda escribir
             nombreGrupo="servicio"
             label="Servicios:"
@@ -318,7 +380,7 @@ function CRUProfessional() {
             value={formData.servicios}
             onChange={handleChange}
             disabled={!isEditable}
-          />
+          /> */}
           <Input
             nombreGrupo="matricula"
             label="Matricula:"
@@ -329,7 +391,7 @@ function CRUProfessional() {
             disabled={!isEditable}
           />
           <Input
-            nombreGrupo="vencimientoMatricula"
+            nombreGrupo="fechaVencimientoMatricula"
             label="Vencimiento de la matricula:"
             tipoInput="date"
             placeholder=""
@@ -338,7 +400,7 @@ function CRUProfessional() {
             disabled={!isEditable}
           />
           <Input
-            nombreGrupo="finContrato"
+            nombreGrupo="fechaFinContrato"
             label="Fin del Contrato:"
             tipoInput="date"
             placeholder=""
@@ -353,7 +415,8 @@ function CRUProfessional() {
         > Dias laborales ▼ </h2>
 
         {diasLaborales.map((dia, index) => (
-          <div key={index} className="container-5" style={seeMore ? { display: 'grid' } : { display: 'none' }}>
+          <div key={index} className="container-5" 
+          style={seeMore ? { display: 'grid'} : { display: 'none' }}>
             <div className='container-days-week'>
               <button 
                 className={isEditableDays[dia] ? 'button-day_active' : 'button-day'} 

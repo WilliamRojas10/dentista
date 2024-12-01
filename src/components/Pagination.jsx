@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { TiChevronLeft, TiChevronRight } from "react-icons/ti";
 import '../styles/Components/Pagination.css';
 
-//TODO: mejorar - corregir el detale que tiene al deslezar hacia arriba inmediatemente para ver los ultimos registros no se carga correctamente el compoenente Pagination creo que puede estar la solucion en css
 function Pagination({ paginaActual, totalPaginas, onPageChange }) {
     const [isVisible, setIsVisible] = useState(true);
-    //  let lastScrollY = window.scrollY;
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
-    
-    //  const handleScroll = () => {
-    //      if (window.scrollY > lastScrollY) {
-    //          // Desplazándose hacia abajo, mostrar
-    //          setIsVisible(true);
-    //      } else {
-    //          // Desplazándose hacia arriba, ocultar
-    //          setIsVisible(false);
-    //      }
-    //      lastScrollY = window.scrollY;
-    //  };
+    // Detectar si el dispositivo es móvil o de escritorio
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 600);
+        };
 
-    //  useEffect(() => {
-    //      window.addEventListener('scroll', handleScroll);
-    //      return () => window.removeEventListener('scroll', handleScroll);
-    //  }, []);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
-    // Calcular las páginas a mostrar
     const obtenerPaginasVisibles = () => {
         if (totalPaginas <= 3) {
             return Array.from({ length: totalPaginas }, (_, i) => i + 1);
@@ -45,7 +37,7 @@ function Pagination({ paginaActual, totalPaginas, onPageChange }) {
                 onClick={() => onPageChange(paginaActual > 1 ? paginaActual - 1 : 1)}
                 disabled={paginaActual === 1}
             >
-                Anterior
+                {isMobile ? <TiChevronLeft /> : 'Anterior'}
             </button>
             {obtenerPaginasVisibles().map((num) => (
                 <button
@@ -61,7 +53,7 @@ function Pagination({ paginaActual, totalPaginas, onPageChange }) {
                 onClick={() => onPageChange(paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas)}
                 disabled={paginaActual === totalPaginas}
             >
-                Siguiente
+                {isMobile ? <TiChevronRight /> : 'Siguiente'}
             </button>
         </div>
     );

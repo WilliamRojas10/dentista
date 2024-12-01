@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import "../styles/Pages/Form.css";
 
 import { Input } from "../components/Input.jsx";
@@ -8,7 +8,9 @@ import ModalConfirmation from "../components/ModalConfirmation.jsx";
 import ModalWarning from '../components/ModalWarning.jsx';
 import axios from 'axios';
 
+import { _crearPaciente, _obtenerPacientePorId, _actualizarPaciente } from '../Services/Paciente.js';
 import { calculateAge } from "../Utils/calculateAge.js";
+import { id } from 'date-fns/locale';
 
 
 const paises = [
@@ -20,69 +22,107 @@ const codigosArea = ["+54", "+1"];
 
 function CRUPatient() {
   const [openModalConfirmation, setOpenModalConfirmation] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
   const [openModalWarning, setOpenModalWarning] = useState(false);
+  const [tittleWarning, setTittleWarning] = useState("");
   const [messageWarning, setMessageWarning] = useState("");
-  const { idPaciente } = useParams();
+  const [colorWarning, setColorWarning] = useState("");
+  const [patientCrated, setPatientCreated] = useState(false);
+  const { idPatient } = useParams();
+  const navigate = useNavigate();
 
   const [codigoArea, setCodigoArea] = useState("");
   const [edad, setEdad] = useState("");
   const [formData, setFormData] = useState({
-    nombre: "william",
-    apellido: "rojas",
-    fechaNacimiento: "2000-03-24", //En este formato tiene que venir del back
+    dniPaciente: "",
+    nombre: "",
+    apellido: "",
+    email: "",
+    // contrasenia: "",
+    nacionalidad: "",
+    telefono: "",
+    fechaNacimiento: "", //En este formato tiene que venir del back
     //edad: "",
-    lugarTrabajo: "",
-    jerarquia: "",
+
     actividad: "",
     titular: "",
+    lugarTrabajo: "",
+    jerarquia: "",
     //codigoArea: "+549",
-    telefono: "+54 3517477399",
-    nacionalidad: "",
-    dni: "",
-    email: "",
+
     localidad: "",
     barrio: "",
     calle: "",
     numero: "",
   });
-  const [isEditable, setIsEditable] = useState(false);
 
-
-  useEffect(() => {
-    obtenerPaciente();
-    setEdad(calculateAge(formData.fechaNacimiento));
-  }, []);
-
-
-
-  const obtenerPaciente = async () => {
+  const crearPaciente = async (pacienteData) => {
     try {
-      const response = await axios.get(`http://localhost:5292/api/Paciente/ObtenerPacientePorId/${idPaciente}`);
-      const data = await response.json();
-    } catch (error) {
-      console.error('Error al obtener los pacientes del backend:', error);
+      const data = await _crearPaciente(pacienteData);
+      setTittleWarning('Aviso');
+      setMessageWarning(data.mensaje);
+      setPatientCreated(data.suceso);
+      setColorWarning('var(--verde)');
       setOpenModalWarning(true);
-      setMessageWarning(error.message);
+    } catch (error) {
+      //console.error(error);
+      const errorMessage = error.response?.data?.mensaje || error.message;
+      setTittleWarning('Error');
+      setMessageWarning(errorMessage);
+      setColorWarning('var(--rojo)');
+      setOpenModalWarning(true);
     }
   };
 
-  const guardarCambios = async () => {
-    const datos = {
-      ...formData
-    };
-
+  const obtenerPacientePorId = async (idPaciente) => {
     try {
-      const response = await axios.post('http://localhost:5292/api/Paciente/Guardar', datos);
-
-    } catch (error) {
-      console.error('Error al guardar los cambios:', error);
+      const data = await _obtenerPacientePorId(idPaciente);
+      setFormData({
+        dniPaciente: data.dniPaciente || "",
+        nombre: data.nombre || "",
+        apellido: data.apellido || "",
+        email: data.email || "",
+        nacionalidad: data.nacionalidad || "",
+        telefono: data.telefono || "",
+        fechaNacimiento: data.fechaNacimiento || "",
+        actividad: data.actividad || "",
+        titular: data.titular || "",
+        lugarTrabajo: data.lugarTrabajo || "",
+        jerarquia: data.jerarquia || "",
+        localidad: data.localidad || "",
+        barrio: data.barrio || "",
+        calle: data.calle || "",
+        numero: data.numero || "",
+      });
+    } 
+    catch (error) {
+      const errorMessage = error.response?.data?.mensaje || error.message;
+      setTittleWarning('Error');
+      setMessageWarning(errorMessage);
+      setColorWarning('var(--rojo)');
       setOpenModalWarning(true);
-      setMessageWarning(error.message);
+    }
+  };
+
+  const actualizarPaciente = async (pacienteDTO) => {
+    let idPaciente = idPatient;
+    try {
+      const data = await _actualizarPaciente(idPaciente, pacienteDTO);
+      setTittleWarning('Aviso');
+      setMessageWarning(data.mensaje);
+      setColorWarning('var(--verde)');
+      setOpenModalWarning(true);
+    } catch (error) {
+      const errorMessage = error.response?.data?.mensaje || error.message;      
+      setTittleWarning('Error');
+      setMessageWarning(errorMessage);
+      setColorWarning('var(--rojo)');
+      setOpenModalWarning(true);
     }
   };
 
 
-  const handleFormat = () => {
+  const formatStates = () => { // limpia los estados
     const resetData = { ...formData };
     Object.keys(resetData).forEach((key) => {
       resetData[key] = "";
@@ -90,12 +130,12 @@ function CRUPatient() {
     setFormData(resetData);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) => { // actualiza los estados en base a lo que se escribe en el input
     const { name, value } = e.target;
-    if (name === 'fechaNacimiento') {
-      const age = calculateAge(value);
-      setEdad(age);
-    }
+    // if (name === 'fechaNacimiento') {
+    //   const age = calculateAge(value);//TODO:
+    //   setEdad(age);
+    // }
     if (name === 'codigoArea') {
       setCodigoArea(value);
     }
@@ -107,50 +147,75 @@ function CRUPatient() {
     }
   };
 
-  const imprimirPorConsola = () => {
+  const confirmSaved = async () => {
+    // try {
 
-    const updatedFormData = { ...formData };
-
-    if (codigoArea && formData.telefono) {
-      updatedFormData.telefono = `${codigoArea} ${formData.telefono}`;
+    if (idPatient === '0') {
+      await crearPaciente(formData);
+    } else {
+      await actualizarPaciente(formData);
     }
-
-    Object.keys(updatedFormData).forEach((key) => {
-      console.log(key, ": ", updatedFormData[key]);
-    });
-
-    setFormData(updatedFormData);
-
-    setIsEditable(false);
     setOpenModalConfirmation(false);
+    // console.log("XQ CARAJO NO SE CIERRA EL MODAL DE CONFIRMATION");
+    // } catch (error) {
+    //   setMessageWarning(error.response ? error.response.data : "Error desconocido");
+    //   setOpenModalWarning(true);
+    // }
   };
+
+
+  useEffect(() => {
+    if (idPatient == '0') {
+      console.log("nuevo paciente y formateado y formateado el formData");
+      formatStates();
+      setIsEditable(true);
+      // crearPaciente(formData);
+    }
+    else {
+      obtenerPacientePorId(idPatient);
+
+    }
+  }, [idPatient]);
+
+  useEffect(() => {//Calcular la edad
+    if (formData.fechaNacimiento) {
+      const age = calculateAge(formData.fechaNacimiento);
+      setEdad(age);
+    }
+  }, [formData.fechaNacimiento]);
 
   return (
     <div className="edit" id={isEditable ? "edit-active" : "show"}>
-      {openModalConfirmation && (
+      {openModalConfirmation &&
         <ModalConfirmation
           tittleConfirmation={"Advertencia"}
-          textConfirmation={"¿Está seguro que sea guardar los cambios de edición del paciente?"}
+          textConfirmation={idPatient === '0' ? "¿Está seguro que desea guardar el paciente?" 
+            : "¿Está seguro que desea guardar los cambios realizados?"}
           openModal={() => {
             setOpenModalConfirmation(false);
           }}
           confirmAction={() => {
-            imprimirPorConsola();//llama al back para guardar los cambios
-            guardarCambios()
+            confirmSaved()
+          }}
+          cancelAction={() => {
+            setOpenModalConfirmation(false);
           }}
           textButtonClose={"Cancelar"}
-          textButtonConfirmation={"Aceptar"}
+          textButtonConfirmation={"Guardar"}
         />
-      )}
+      }
 
       {openModalWarning && (
         <ModalWarning
-          tittleWarning={"Error"}
+          tittleWarning={tittleWarning}
           textWarning={messageWarning}
           openModal={() => {
             setOpenModalWarning(false);
+            if (patientCrated){
+              navigate("/managePatients");}
           }}
           textButton={"Aceptar"}
+          color={colorWarning}
         />
       )}
 
@@ -164,7 +229,7 @@ function CRUPatient() {
             placeholder="Nombre"
             value={formData.nombre}
             onChange={handleChange}
-            disabled={!isEditable}  // El campo está deshabilitado si no está en modo edición
+            disabled={!isEditable}
           />
           <Input
             nombreGrupo="apellido"
@@ -173,7 +238,7 @@ function CRUPatient() {
             placeholder="Apellido"
             value={formData.apellido}
             onChange={handleChange}
-            disabled={!isEditable} // Igual para este campo
+            disabled={!isEditable}
           />
           <Input
             nombreGrupo="fechaNacimiento"
@@ -264,11 +329,11 @@ function CRUPatient() {
             disabled={!isEditable}
           />
           <Input
-            nombreGrupo="dni"  // Cambiado de 'documento' a 'dni' para que se pueda agregar valores en el input
+            nombreGrupo="dniPaciente"  // Esto debe coincidir con el nombre de la propiedad en formData
             label="Nº de documento:"
             tipoInput="text"
             placeholder="DNI: 12.345.987"
-            value={formData.dni}
+            value={formData.dniPaciente}
             onChange={handleChange}
             disabled={!isEditable}
           />
@@ -329,7 +394,7 @@ function CRUPatient() {
             Editar
           </button>
           <button type="button" className="btn" disabled={!isEditable} onClick={() => { setOpenModalConfirmation(true); }}>
-            Guardar cambios
+            Guardar
           </button>
         </div>
       </form>

@@ -47,10 +47,10 @@ function App() {
         <Route path="/manageProfessionals" element={<ManageProfessionals />} />
         {/* <Route path="/manageProfessions" element={<ManageServices />} /> */}
         <Route path="/manageBenefits" element={<ManageBenefits />} />
-        <Route path="/CRUPatient" element={<CRUPatient />} />
-        <Route path="/CRUProfessional" element={<CRUProfessional />} />
-        <Route path="/createService" element={<CreateService />} />
-        <Route path="/CRUBenefit" element={<CRUBenefit />} />
+        <Route path="/CRUPatient/:idPatient" element={<CRUPatient />} />
+        <Route path="/CRUProfessional/:idProfessional" element={<CRUProfessional />} />
+        <Route path="/createService/:idService" element={<CreateService />} />
+        <Route path="/CRUBenefit/:idBenefit" element={<CRUBenefit />} />
         <Route path="/search" element={<Search />} />
       </Routes>
     </Router>

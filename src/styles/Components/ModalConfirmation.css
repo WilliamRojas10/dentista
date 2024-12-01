@@ -42,6 +42,7 @@
 .container-confirmation .modal-confirmation .container-buttons-confirmation {
     display: flex;
     gap: 1rem;
+    padding: 0 15px;
 }
 
 .container-confirmation .modal-confirmation .container-buttons-confirmation .button-1,
