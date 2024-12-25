@@ -1,6 +1,11 @@
 .msj-error-email, .msj-error-contrasenia, .msj-error-dni{
     color: red;
-    font-size: 15px;
+    font-size: var(--font-size-tertiary);
+}
+
+label{
+    font-size: var(--font-size-secondary);
+    
 }
 
 input, select{
@@ -10,6 +15,6 @@ input, select{
     padding: 10px;
     border-radius: 10px;
     border: solid 1px rgba(0, 0, 0, 0.300);
-    
+    font-size: var(--font-size-tertiary);
 }
 

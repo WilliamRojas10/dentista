@@ -12,14 +12,17 @@ import ManagePatients from './Pages/ManagePatients.jsx';
 import ManageServices from './Pages/ManageServices.jsx';
 import ManageBenefits from './Pages/ManageBenefits.jsx'
 import CRUPatient from './Pages/CRUPatient.jsx';
-import CRUProfessional from './Pages/CRUProfessional.jsx';
+import CRUProfessional from './Pages/FormStepProfessional/CRUProfessional.jsx';
 import CreateService from './Pages/CreateService.jsx';
 import CRUBenefit from './Pages/CRUBenefits.jsx';
+import CRUWorkingDays from './Pages/FormStepProfessional/CRUWorkingDays.jsx';
 // import CalendarMonthly from './components/CalendarMonthly.jsx';
 // import CalendarWeekly from './components/CalendarWeekly.jsx';
 
 /*Components*/
 import ModalRequestTurn from './components/ModalRequestTurn.jsx';
+import { DropdownBar } from './components/DropdownBar.jsx';
+import {InputDateBar} from './components/InputDateBar.jsx';
 
 import Prueba from './components/Prueba.jsx';
 import Diary from './components/Diary.jsx';
@@ -52,6 +55,14 @@ function App() {
         <Route path="/createService/:idService" element={<CreateService />} />
         <Route path="/CRUBenefit/:idBenefit" element={<CRUBenefit />} />
         <Route path="/search" element={<Search />} />
+
+        <Route path="/CRUWorkingDasy/:idProfessional" element={<CRUWorkingDays />} />
+
+
+
+        <Route path="/inputDateBar" element={<InputDateBar />} />
+        <Route path="/dropdownBar" element={<DropdownBar />} />
+        
       </Routes>
     </Router>
   );

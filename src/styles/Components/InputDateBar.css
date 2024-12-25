@@ -1,0 +1,29 @@
+.input-date-bar{
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--color-base-02);
+}
+
+.input-date-bar label {
+    color: var(--blanco);
+}
+
+
+@media screen and (max-width: 410px) {
+    .input-date-bar input,
+    .input-date-bar label {
+        font-size: var(--font-size-tertiary);
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .input-date-bar{
+        display: grid;
+        /* grid-template-columns: 1fr 1fr; */
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+
+   
+}

@@ -4,7 +4,7 @@ import "../styles/Components/Input.css"
  const Input = ({ nombreGrupo, label, tipoInput, onChange, placeholder, msjError, require, value, disabled})=> {
 
     return(
-        <div className={`g-${nombreGrupo}`}>
+        <div className={`g-${nombreGrupo}`} style={{width: "100%"}}>
             <label
               htmlFor={nombreGrupo}>
               {label}

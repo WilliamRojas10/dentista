@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import "../styles/Pages/Form.css";
-import { Input } from "../components/Input.jsx";
-import Select from "../components/Select.jsx";
-import ModalConfirmation from "../components/ModalConfirmation.jsx";
-import ModalWarning from '../components/ModalWarning.jsx';
+import "../../styles/Pages/Form.css";
+import { IoIosArrowBack } from "react-icons/io";
+import { FaArrowRight } from "react-icons/fa6";
+
+import { Input } from "../../components/Input.jsx";
+import Select from "../../components/Select.jsx";
+import ModalConfirmation from "../../components/ModalConfirmation.jsx";
+import ModalWarning from '../../components/ModalWarning.jsx';
 import axios from 'axios';
 
-import { calculateAge } from "../Utils/calculateAge.js";
-import { _crearProfesional, _obtenerProfesionalPorId, _actualizarProfesional } from '../Services/Profesional.js';
-import { da } from 'date-fns/locale';
+import { calculateAge } from "../../Utils/calculateAge.js";
+import { _crearProfesional, _obtenerProfesionalPorId, _actualizarProfesional } from '../../Services/Profesional.js';
 
 //TODO: falta mejorar la estetica con dias laborales
 
@@ -236,7 +238,10 @@ useEffect(() => {//Calcular la edad
         />
       )}
       <form className="form">
-        <h2>Datos del Profesional</h2>
+        <div className='header'>
+            <span title="Atrás" className="icon-back"><IoIosArrowBack style={{ fontSize: "30px" }} /></span>
+            <h2 title='Datos del Profesional'>  Datos del profesional </h2>
+        </div>
         <div className="container-4 ">
           <Input
             nombreGrupo="nombre"
@@ -410,64 +415,7 @@ useEffect(() => {//Calcular la edad
           />
         </div>
 
-        <h2 style={{ cursor: 'pointer' }} 
-            onClick={() => setSeeMore(!seeMore) }
-        > Dias laborales ▼ </h2>
-
-        {diasLaborales.map((dia, index) => (
-          <div key={index} className="container-5" 
-          style={seeMore ? { display: 'grid'} : { display: 'none' }}>
-            <div className='container-days-week'>
-              <button 
-                className={isEditableDays[dia] ? 'button-day_active' : 'button-day'} 
-                disabled={!isEditable}
-                onClick={() => handleDayClick(dia)}
-                type="button"
-              >
-                  {dia}
-              </button>
-            </div>
-
-
-            <Input
-              nombreGrupo={`horaInicio${dia}`}
-              label="Hora de inicio:"
-              tipoInput="time"
-              // value={formData.lunes}
-              //  onChange={handleChange}
-              require={!isEditableDays[dia] }
-              disabled={!isEditableDays[dia]}
-            />
-            <Input
-              nombreGrupo="horaFin"
-              label="Hora de Fin:"
-              tipoInput="time"
-              // value={formData.lunes}
-              //  onChange={handleChange}
-              require={!isEditableDays[dia]}
-              disabled={!isEditableDays[dia]}
-            />
-            <Input
-              nombreGrupo="espacioReceso"
-              label="Hora de inicio de receso:"
-              tipoInput="time"
-              // value={formData.lunes}
-              //  onChange={handleChange}
-              require={!isEditableDays[dia]}
-              disabled={!isEditableDays[dia]}
-            />
-            <Input
-              nombreGrupo="espacioReceso"
-              label="Hora de fin de receso:"
-              tipoInput="time"
-              // value={formData.lunes}
-              //  onChange={handleChange}
-              require={!isEditableDays[dia]}
-              disabled={!isEditableDays[dia]}
-            />
-          </div>
-
-        ))}
+    
 
 
 
@@ -481,7 +429,7 @@ useEffect(() => {//Calcular la edad
             Editar
           </button>
           <button type="button" className="btn" disabled={!isEditable} onClick={() => { setOpenModalConfirmation(true); }}>
-            Guardar
+            Siguiente <FaArrowRight />
           </button>
         </div>
       </form>
